@@ -1,0 +1,88 @@
+/**
+ * File:	modules/PamSettings.ycp
+ * Package:	yast2-pam
+ * Summary:	YaST intrerface for security agent (/etc/security/*.conf)
+ * Authors:	Jiri Suchomel <jsuchome@suse.cz>
+ *
+ * $Id$
+ *
+ */
+
+{
+
+module "PamSettings";
+
+list security_files = [];
+
+// form absolute path name
+// the files are pam_unix2.conf, pam_pwcheck.conf under /etc/security
+// parameter could be substring of the path (e.g. "unix2")
+define string Filename (string name) ``{
+
+    string ret = name;
+    foreach (`file, GetFiles (), ``{
+	if (issubstring (file, name))
+	    ret = file;
+    });
+    return ret;
+    // TODO use some cache map?
+}
+
+global define list GetFiles () ``{
+
+    if (security_files == [])
+	security_files = SCR::Dir (.etc.security.section);
+    return security_files;
+}
+
+global define list GetValues (string file, string type) ``{
+
+    string filename = Filename (file);
+    return splitstring (
+	SCR::Read (add (add (.etc.security.v, filename), type)), " ");
+}
+
+global define map GetFile (string file) ``{
+
+    map ret = $[];
+    string filename = Filename (file);
+    foreach (`type, SCR::Dir (add (.etc.security.v, filename)), ``{
+	ret [type] = GetValues (filename, type);
+    });
+    return ret;
+}
+
+global define boolean SetValue (string file, string type, list values) ``{
+    string filename = Filename (file);
+    return SCR::Write (add (add (.etc.security.v, filename), type),
+	mergestring (values, " "));
+}
+
+global define boolean AddValue (string file, string type, string value) ``{
+    list values = GetValues (file, type);
+    return SetValue (file, type, union (values, [value]));
+}
+
+global define boolean RemoveValue (string file, string type, string value) ``{
+    list values = GetValues (file, type);
+    return SetValue (file, type, filter (`v, values, ``{
+	if (!issubstring (v, "="))
+	    return v != value;
+	else
+	    return !issubstring (v,value);
+    }));
+}
+
+/**
+ * Writes the files contents
+ * @return true on success
+ */
+global define boolean Write (list files) ``{
+
+    return foreach (`name, files, ``{
+	string filename = Filename (file);
+	return SCR::Write (add (.etc.security.v, filename), nil);
+    });
+}
+
+}//EOF

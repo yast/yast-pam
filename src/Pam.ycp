@@ -1,0 +1,34 @@
+/**
+ * File:	modules/Pam.ycp
+ * Package:	yast2-pam
+ * Summary:	YaST intrerface for agent-pam
+ * Authors:	Jiri Suchomel <jsuchome@suse.cz>
+ *
+ * $Id$
+ *
+ */
+
+{
+
+module "Pam";
+
+import "PamSettings";
+
+
+global define boolean RemoveValue (string file, string type, string mod, string value) ``{
+
+    value = "-" + value;
+    return SCR::Write (add (add (add (.pam, file), type), mod), value);
+}
+
+global define boolean AddValue (string file, string type, string mod, string value) ``{
+
+    value = "+" + value;
+    return SCR::Write (add (add (add (.pam, file), type), mod), value);
+}
+
+// TODO fuctions for adding/removing new module (winbind, krb5 etc.)
+//AddModule/AddLine/AddAuthType - use PamSettings if necessary...
+
+/* EOF */
+}

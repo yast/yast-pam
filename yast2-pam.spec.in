@@ -24,6 +24,7 @@ Summary:	pam(8) agent
 
 %files
 %defattr(-,root,root)
+@moduledir@/*.ycp
 @plugindir@/libpy2ag_pam.so.*
 @plugindir@/libpy2ag_pam.so
 @plugindir@/libpy2ag_pam.la

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jul 16 15:06:22 CEST 2003 - jsuchome@suse.de
+
+- added YCP interface for agent (Pam.ycp, PamSettings.ycp) [initial]
+- stand-alone agent for configuring /etc/security/*.conf
+- 2.8.2
+
+-------------------------------------------------------------------
 Mon Nov 25 12:45:06 CET 2002 - msvec@suse.cz
 
 - 2.7.0
