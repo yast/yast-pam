@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Mon Jun 24 16:45:15 CEST 2002 - arvin@suse.de
 
-- renamed to yast2-pam
+- renamed from yast2-agent-pam to yast2-pam
 
 -------------------------------------------------------------------
 Wed May 15 11:56:44 CEST 2002 - arvin@suse.de
