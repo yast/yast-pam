@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug 12 20:40:31 CEST 2003 - jsuchome@suse.de
+
+- updated documentation
+- 2.8.4
+
+-------------------------------------------------------------------
 Mon Aug  4 16:00:50 CEST 2003 - jsuchome@suse.de
 
 - \t is also separator in config files (besides space)

@@ -8,62 +8,122 @@
 <HR>
 
 <H2>Purpose</H2> 
-The Pam agent (<TT>ag_pam</TT>) is used to access <TT>...</TT>.
+The Pam agent (<TT>ag_pam</TT>) is used to access files in
+/etc/pam.d directory.
 It is part of YaST2 SCR, the system configuration repository,
 used to access configuration data on the target system. The general
 SCR API allows <TT>Read()</TT> and <TT>Write()</TT> access to get and
 change data.
 
 <P>
-<H2>Implementation</H2>
-<TT>...</TT>
+<H2>Interface for pam-agent</H2>
+The interface is implemented as a SCR agent with the usual <TT>Read()</TT> and
+<TT>Write()</TT> interface. The path prefix used is <TT>.pam</TT>.
 
 <P>
 <I><B>Note:</B> The complete development documentation is available in the
 <A HREF="autodocs/index.html"><TT>autodocs/</TT></A> directory.</I>
 
-<P>
-<H2>Interface for pam-agent</H2>
-The interface is implemented as a SCR agent with the usual <TT>Read()</TT>,
-<TT>Write()</TT> and <TT>Dir()</TT> interface. The path prefix used is
 
-<UL><TT>.pam</TT></UL>
-<TT>...</TT>
-
-<P>
 <H2>Restrictions, limits and future enhancements</H2>
-<TT>...</TT>
+
+Agent can neither add nor remove line from the file. It only
+allows reading the file content or changing the options.
 
 <P>
-See the <A HREF="TODO.txt">TODO.txt</A> file for the current status of support
-and also for the list of possible future enhancements.
+<H2>Read paths description</H2>
+<p>
+Path is <tt>&lt;service&gt;[.&lt;type&gt;.&lt;module&gt;]</tt>, where<br>
+<tt>service</tt> is a PAM config file in /etc/pam.d<br>
+<tt>type</tt> is one of <i>auth</i>, <i>session</i>, <i>password</i> or
+<i>acct</i><br>
+<tt>module</tt> is the name of a PAM module (e.g <i>pam_unix2</i>
+
+<p>
+For more info on these values see manual page (<i>man pama</i>).
+
+<p>
+<b>Examples:</b><br>
+
+<p>
+Let's have the file /etc/pam.d, whose first three lines are:
+<br>
+<tt>
+#%PAM-1.0<br>
+auth sufficient pam_krb5afs.so #use_first_pass<br>
+auth requisite  pam_unix2.so nullok #set_secrpc<br>
+</tt>
+<p>
+
+<tt>SCR::Read(.pam.login)</tt> returns the contents of whole /etc/pam.d/login
+file as the YCPList of lines, where each line is a YCPMap with the keys:
+
+<dl>
+<dd><tt>control</tt> with a values <i>required</I>, <i>requisite</i>,
+<i>sufficient</i> or <i>optional</i>
+
+<dd><tt>module</tt> PAM module
+
+<dd><tt>type</tt> (values <i>auth</i>, <i>session</i>, <i>password</i> or
+<i>acct</i>)
+
+<dd><tt>comment</tt> comment in the line
+</dl>
+
+<br>
+So the return value of above call could look like<br>
+<tt>[<br>
+$["comments":"%PAM-1.0"],<br>
+$["comments":"use_first_pass", "control":"sufficient", "module":"pam_krb5afs.so", "type":"auth"],<br>
+$["arguments":"nullok", "comments":"set_secrpc", "control":"requisite", "module":"pam_unix2.so", "type":"auth"],<br>
+etc.<br>
+]</tt>
+
+<p>
+<tt>SCR::Read(.pam.login.auth.pam_unix2)</tt> returns the line corresponding to
+the path. In this example, it is
+<br>
+<tt>[<br>
+$["arguments":"nullok", "comments":"set_secrpc", "control":"requisite", "module":"pam_unix2.so", "type":"auth"]<br>
+]</tt>
+
 
 <P>
-<H2>Complete Read paths table</H2>
-The complete <TT>Write()</TT> paths table is similar to this except for
-the paths to which YCPList is returned.
+<H2>Write paths description</H2>
+<p>
+For writing it is needed full path in the form
+<tt>&lt;service&gt;[.&lt;type&gt;.&lt;module&gt;]</tt> and the argument which
+is in the form <tt>+value</tt> (for adding new option) or <tt>-value</tt>
+(for removing existing option). 
+<p>
+<b>Examples:</b><br>
 
-<TABLE>
-	<TR><TH WIDTH="30%" ALIGN="left">Path</TH><TH WIDTH="20%" ALIGN="left">Type</TH><TH ALIGN="left">Result</TH></TR>
-	<TR><TD><TT>.pam</TD><TD ALIGN="left">YCPList</TD>
-	<TD>list with all available directives (currently sublist of ["alias", "pre-install", "post-install", "options"]</TD></TR>
-	<TR>...</TR>
-</TABLE>
+For the file above, we could modify the 2nd line by removing <i>nullok</i>
+option:
+<br>
+<tt>SCR::Write(.pam.login.auth.pam_unix2, "-nullok")</tt>
 
+<p>
+And to add an option for the <i>auth</i> type and <i>krb5afs</i> module:<br>
+
+<tt>SCR::Write(.pam.login.auth.pam_krb5afs, "+use_first_pass")</tt>
+<p>
+Now this is the look of the modified file:
+<br>
+<tt>
+#%PAM-1.0<br>
+auth sufficient pam_krb5afs.so use_first_pass #use_first_pass<br>
+auth requisite  pam_unix2.so #set_secrpc<br>
+</tt>
+
+
+<p>
+Return value of Write is YCPBoolean (operation success).
 <P>
-<H2>Complete Dir paths table</H2>
-The return type of the <TT>Dir()</TT> is always YCPList.
 
-<TABLE>
-	<TR><TH WIDTH="40%" ALIGN="left">Path</TH><TH ALIGN="left">Result</TH></TR>
-	<TR><TD><TT>.pam</TD>
-	<TD>list with all available directives (currently sublist of ["alias", "pre-install", "post-install", "options"]</TD></TR>
-	<TR>...</TR>
-</TABLE>
-
-<P>
 <ADDRESS>
-Thorsten Kukuk &lt;kukuk@suse.de&gt;<BR>
+Thorsten Kukuk &lt;kukuk@suse.de&gt; (ag_pam),
+Jiri Suchomel &lt;jsuchome@suse.cz&gt; (this text)<br>
 </ADDRESS>
 
 
