@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Wed Sep 11 12:09:38 CEST 2002 - kukuk@suse.de
 
-- Create temp file after checking if source exists
+- Create temp file after checking if source exists [Bug #19374]
 
 -------------------------------------------------------------------
 Mon Jul 29 11:44:04 CEST 2002 - kukuk@suse.de
