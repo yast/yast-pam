@@ -1,6 +1,5 @@
 @HEADER-COMMENT@
-
-# neededforbuild  autoconf automake gpp libgpp libxcrypt libxcrypt-devel yast2-core yast2-core-devel yast2-devtools
+# neededforbuild gpp libgpp libxcrypt libxcrypt-devel yast2-core yast2-core-devel yast2-devtools
 
 @HEADER@
 Summary:	-
@@ -8,12 +7,6 @@ Provides:	yast2-agent-pam
 Obsoletes:	yast2-agent-pam
 
 %description
--
-
-@HEADER-DEVEL@
-Summary:	-
-
-%description devel
 -
 
 @PREP@
@@ -26,15 +19,8 @@ Summary:	-
 
 %files
 %defattr(-,root,root)
-%dir @plugindir@
 @plugindir@/libpy2ag_pam.so.*
-%dir @scrconfdir@
-@scrconfdir@/*.scr
-
-%files devel
-%defattr(-,root,root)
-%dir @plugindir@
 @plugindir@/libpy2ag_pam.so
 @plugindir@/libpy2ag_pam.la
-%docdir @docdir@
-%doc @docdir@/*
+@scrconfdir@/*.scr
+%doc @docdir@
