@@ -2,6 +2,7 @@
  * File:	modules/PamSettings.ycp
  * Package:	yast2-pam
  * Summary:	YaST intrerface for security agent (/etc/security/*.conf)
+ *		and /etc/default/passwd agent
  * Authors:	Jiri Suchomel <jsuchome@suse.cz>
  *
  * $Id$
@@ -12,7 +13,19 @@
 
 module "PamSettings";
 
+/**
+ * Was /etc/default/passwd modified?
+ */
+boolean default_passwd_modified	= false;
+
+/**
+ * Was anything under /etc/security/ modified?
+ */
+boolean security_modified	= false;
+
 list<string> security_files = [];
+
+//---------------------------- functions for handling /etc/security/*.conf
 
 /**
  * Returns list of files currently handled by the module
@@ -85,7 +98,8 @@ global define map GetFile (string file) ``{
  * SetValues ("pwcheck", "password", [ "cracklib", "md5" ])
  */
 global define boolean SetValues (string file, string type, list<string> values) ``{
-    string filename = Filename (file);
+    string filename	= Filename (file);
+    security_modified	= true;
     return SCR::Write (add (add (.etc.security.v, filename), type),
 	mergestring ((list<string>)values, " ")) == true;
 }
@@ -123,13 +137,41 @@ global define boolean RemoveValue (string file, string type, string value) ``{
     }));
 }
 
+//---------------------------- functions for handling /etc/default/passwd
+
+/**
+ * Reads the value of default crypt hash (defined in /etc/default/passwd)
+ */
+global define string GetHashMethod () {
+    return (string) SCR::Read (.etc.default.passwd.crypt);
+}
+
+/**
+ * Sets the new value of default crypt hash - modifies /etc/default/passwd !
+ * @param hash the new value of hash
+ * @example
+ * SetValues ("md5")
+ */
+global define boolean SetHashMethod (string hash) {
+    default_passwd_modified	= true;
+    return SCR::Write (.etc.default.passwd.crypt, hash);
+}
+
+//---------------------------- common functions ------------------------------
+
 /**
  * Writes all edited files to the disk
+ * @param force - write everythink, even if modification was not detected
  * @return true on success
  */
-global define boolean Write (list files) ``{
+global define boolean Write (boolean force) {
 
-    return SCR::Write (.etc.security, nil);
+    boolean ret = true;
+    if (security_modified || force)
+	ret	= ret && SCR::Write (.etc.security, nil);
+    if (default_passwd_modified || force)
+	ret	= ret && SCR::Write (.etc.default.passwd, nil);
+    return ret;
 }
 
 }//EOF

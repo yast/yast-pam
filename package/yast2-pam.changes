@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 28 14:37:32 CEST 2004 - jsuchome@suse.cz
+
+- /etc/default/passwd is used for handling encryption types
+  (new agent + YCP routines)
+- 2.10.0
+
+-------------------------------------------------------------------
 Thu May 27 17:02:46 CEST 2004 - jsuchome@suse.cz
 
 - ag_passwd: read group password (#41300)
