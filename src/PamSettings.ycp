@@ -97,7 +97,8 @@ global define boolean SetValues (string file, string type, list values) ``{
  */
 global define boolean AddValue (string file, string type, string value) ``{
     list values = GetValues (file, type);
-    return SetValues (file, type, union (values, [value]));
+    // value must be first (to avoid adding to the commented rest of line)
+    return SetValues (file, type, union ([value], values));
 }
 
 /**
