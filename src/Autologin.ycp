@@ -130,9 +130,9 @@ global define boolean AskForDisabling (string new) ``{
 
     // popup text (%1 is user name, %2 is additional info,
     // like "Now LDAP was enabled")
-    string question = sformat (_("The autologin feature is enabled for user %1.
+    string question = sformat (_("The automatic login feature is enabled for user %1.
 %2
-Do you want to disable autologin?"), user, new);
+Disable automatic login?"), user, new);
 
     if (used && Popup::YesNo (question))
 	Disable ();
