@@ -99,6 +99,17 @@ global define void Disable () ``{
 }
 
 /**
+ * Wrapper for setting the 'used' variable
+ */
+global define void Use (boolean use) ``{
+    if (used != use)
+    {
+	used = use;
+	modified = true;
+    }
+}
+
+/**
  * Disable autologin and write it (used probably for automatic
  * disabling without asking)
  * @param write_only when true, suseconfig script will not be run

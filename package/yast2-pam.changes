@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb  3 11:13:27 CET 2004 - jsuchome@suse.cz
+
+- added Autologin::Use function (set 'use' variable from outside)
+- 2.9.2
+
+-------------------------------------------------------------------
 Mon Jan 26 15:38:58 CET 2004 - msvec@suse.cz
 
 - updated for the new interpreter
