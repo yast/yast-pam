@@ -541,7 +541,7 @@ YCPValue PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPVa
 	  string conf_name;
 	  struct pam_config data;
 	  char config_tmp[] = "/etc/security/.YaST2.pam.agent.XXXXXX";
-	  int fd = mkstemp (config_tmp);
+	  int fd;
 	  struct stat sbuf;
 	  FILE *fout;
 
@@ -557,6 +557,7 @@ YCPValue PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPVa
 	      return YCPVoid();
 	    }
 
+	  fd = mkstemp (config_tmp);
 	  if (fd < 0)
 	    {
 	      y2error ("PamAgent::Write: cannot create tmp file");
@@ -641,7 +642,7 @@ YCPValue PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPVa
 	  FILE *fout;
 	  FILE *fp = fopen (conf_name.c_str(), "r");
 	  char config_tmp[] = "/etc/pam.d/.YaST2.pam.agent.XXXXXX";
-	  int fd = mkstemp (config_tmp);
+	  int fd;
 	  struct stat sbuf;
 	  if (fp == NULL)
 	    {
@@ -650,6 +651,7 @@ YCPValue PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPVa
 	      return YCPVoid();
 	    }
 
+	  fd =  mkstemp (config_tmp);
 	  if (fd < 0)
 	    {
 	      y2error ("PamAgent::Write: cannot create tmp file");
