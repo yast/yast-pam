@@ -371,7 +371,11 @@ sub write_passwd {
 	return 0;
     }
 
-    foreach my $type (sort {$b cmp $a} keys %users_w ) {
+    foreach my $type (sort {$b cmp $a} keys %users_w) {
+
+	if ($type ne "local" && $type ne "system") {
+	    next;
+	}
 
 	foreach my $uid (sort {$a <=> $b} keys %{$users_w{$type}}) {
 
@@ -418,6 +422,10 @@ sub write_shadow {
     }
 
     foreach my $type (sort {$b cmp $a} keys %shadow_w ) {
+
+	if ($type ne "local" && $type ne "system") {
+	    next;
+	}
 
         foreach my $uname (sort keys %{$shadow_w{$type}}) {
 
@@ -471,6 +479,10 @@ sub write_group {
 
     # sort order: system items go before local ones
     foreach my $type (sort {$b cmp $a} keys %groups_w ) {
+
+	if ($type ne "local" && $type ne "system") {
+	    next;
+	}
 
 	# sort order: id
         foreach my $gid (sort {$a <=> $b} keys %{$groups_w{$type}}) {

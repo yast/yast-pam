@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar 30 16:31:23 CEST 2004 - jsuchome@suse.cz
+
+- ag_passwd fix: do not save NIS users to local files (#37508)
+- 2.9.9
+
+-------------------------------------------------------------------
 Thu Mar 25 13:43:45 CET 2004 - jsuchome@suse.cz
 
 - ag_passwd: check if all parts of shadow line exist during write
