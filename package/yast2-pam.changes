@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr  2 15:51:52 CEST 2004 - jsuchome@suse.cz
+
+- changed license to GPL
+- 2.9.10
+
+-------------------------------------------------------------------
 Tue Mar 30 16:31:23 CEST 2004 - jsuchome@suse.cz
 
 - ag_passwd fix: do not save NIS users to local files (#37508)
