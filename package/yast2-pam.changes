@@ -1,0 +1,65 @@
+-------------------------------------------------------------------
+Wed May 15 11:56:44 CEST 2002 - arvin@suse.de
+
+- use %{_libdir} in plugin path
+
+-------------------------------------------------------------------
+Mon Apr  8 11:56:43 CEST 2002 - kukuk@suse.de
+
+- Merge 8.0-branch with STABLE
+- Fix for g++ 3.1
+- Version 2.6.0
+
+-------------------------------------------------------------------
+Thu Feb 28 16:00:16 CET 2002 - kukuk@suse.de
+
+- Return only boolean value in Write part of the agent [Bug #13965]
+
+-------------------------------------------------------------------
+Tue Feb 19 16:35:19 CET 2002 - kukuk@suse.de
+
+- Treat the case correct where the only argument should be removed
+- Increase version number to 2.5.3
+
+-------------------------------------------------------------------
+Sun Feb 17 10:23:06 CET 2002 - kukuk@suse.de
+
+- Treat missing config files as warning, not error [Bug #13343]
+- Increase version number to 2.5.2
+
+-------------------------------------------------------------------
+Fri Jan 25 12:07:22 CET 2002 - kukuk@suse.de
+
+- Check always if fopen returns NULL [Bug #12893]
+- Add support for /etc/security/pam_pwcheck.conf
+- Increase version number to 2.5.1
+
+-------------------------------------------------------------------
+Sat Jan 19 20:30:14 CET 2002 - kukuk@suse.de
+
+- Add support for /etc/security/pam_unix2.conf
+- Don't remove spaces in comments
+- Increase version number to 2.5.0
+
+-------------------------------------------------------------------
+Tue Aug 14 18:22:15 CEST 2001 - kukuk@suse.de
+
+- Fix order of arguments for rename() call
+- restore owner and permissions of config file
+
+-------------------------------------------------------------------
+Mon Jul 16 11:37:01 CEST 2001 - arvin@suse.de
+
+- fixed to compile with gcc 3.0
+
+-------------------------------------------------------------------
+Sat Jul 14 19:09:43 CEST 2001 - kukuk@suse.de
+
+- Don't know who modiefied the CVS version without changes entries,
+  but use the current CVS version now.
+
+-------------------------------------------------------------------
+Tue Jul 10 15:43:40 CEST 2001 - kukuk@suse.de
+
+- Initial version
+
