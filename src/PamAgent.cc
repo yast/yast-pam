@@ -265,7 +265,7 @@ read_unix2_config (FILE *fp, struct pam_config *data)
  */
 YCPValue PamAgent::Read(const YCPPath &path, const YCPValue& arg = YCPNull())
 {
-  y2milestone ("PamAgent::Read(%s)", path->toString().c_str());
+  y2debug ("PamAgent::Read(%s)", path->toString().c_str());
 
   if (path->length() == 1)
     {
@@ -486,7 +486,7 @@ remove_string (const char *str, const char *rem)
 
   if (cp == NULL) /* we don't have this substring */
     {
-      y2milestone ("%s not found in %s", rem, t);
+      y2debug ("%s not found in %s", rem, t);
       free (t);
       return NULL;
     }
@@ -509,8 +509,8 @@ YCPValue PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPVa
 
   /* FIXME: strdup for param will create a memory leak */
 
-  y2milestone ("PamAgent::Write(%s,%s)", path->toString().c_str(),
-	       value->toString().c_str());
+  y2debug ("PamAgent::Write(%s,%s)", path->toString().c_str(),
+	   value->toString().c_str());
 
   param = strdup (value->toString().c_str());
   if (param[0] == '"')
@@ -525,7 +525,7 @@ YCPValue PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPVa
     add = 1;
   else
     {
-      y2milestone ("PamAgent::Write: don't know what todo with %s", param);
+      y2debug ("PamAgent::Write: don't know what todo with %s", param);
       return YCPVoid();
     }
   ++param;
@@ -559,7 +559,7 @@ YCPValue PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPVa
 
 	  if (fd < 0)
 	    {
-	      y2milestone ("PamAgent::Write: cannot create tmp file");
+	      y2error ("PamAgent::Write: cannot create tmp file");
 	      return YCPVoid();
 	    }
 	  fout = fdopen (fd, "w");
@@ -652,7 +652,7 @@ YCPValue PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPVa
 
 	  if (fd < 0)
 	    {
-	      y2milestone ("PamAgent::Write: cannot create tmp file");
+	      y2error ("PamAgent::Write: cannot create tmp file");
 	      return YCPVoid();
 	    }
 	  fout = fdopen (fd, "w");
