@@ -422,9 +422,14 @@ sub write_shadow {
         foreach my $uname (sort keys %{$shadow_w{$type}}) {
 
 	    my %shadow_entry	= %{$shadow_w{$type}{$uname}};
+	    foreach my $key ("shadowwarning", "shadowinactive", "shadowexpire", "shadowflag", "userpassword") {
+		if (!defined $shadow_entry{$key}) {
+		    $shadow_entry{$key}	= "";
+		}
+	    }
 	    my $shadowline	= join (":", (
 		$uname,
-		$shadow_entry{"userpassword"} || "",
+		$shadow_entry{"userpassword"},
 		$shadow_entry{"shadowlastchange"} || 0,
 		$shadow_entry{"shadowmin"} || 0,
 		$shadow_entry{"shadowmax"} || 0,

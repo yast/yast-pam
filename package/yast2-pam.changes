@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Mar 25 13:43:45 CET 2004 - jsuchome@suse.cz
+
+- ag_passwd: check if all parts of shadow line exist during write
+  (and set the default values otherwise)
+- 2.9.8
+
+-------------------------------------------------------------------
 Mon Mar 22 17:10:00 CET 2004 - jsuchome@suse.cz
 
 - use lowecase user/group attribute names
