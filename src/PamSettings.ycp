@@ -130,7 +130,7 @@ global define boolean RemoveValue (string file, string type, string value) ``{
  */
 global define boolean Write (list files) ``{
 
-    return foreach (string name, files, ``{
+    return foreach (string name, (list<string>) files, ``{
 	string filename = Filename (name);
 	return SCR::Write (add (.etc.security.v, filename), nil);
     });
