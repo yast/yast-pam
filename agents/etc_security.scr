@@ -1,17 +1,18 @@
 /**
- * File:	etc_nsswitch_conf.scr FIXME remove nssswitch
- * Summary:	Agent for reading/writing /etc/nsswitch.conf
+ * File:	etc_security.scr
+ * Summary:	Agent for reading/writing /etc/security/pam_*.conf
  * Access:	read / write
- * Author:	Petr Blahos <pblahos@suse.cz>
+ * Author:	Jiri Suchomel <jsuchome@suse.cz>
  *
  * Example:
- *   Dir(.etc.nsswitch_conf)
- *   (["passwd", "group", "hosts", "networks", "services"])
+ *   Dir(.etc.security.section)
+ *   (["/etc/security/pam_pwcheck.conf", "/etc/security/pam_unix2.conf"])
  **
- *   Read(.etc.nsswitch_conf.passwd)
- *   ("compat")
+ *   Read(.etc.security.v."/etc/security/pam_pwcheck.conf".password)
+ *   (["nullok", "cracklib")
  **
- *   Write(.etc.nsswitch_conf.passwd, "files ldap")
+ *   Write(.etc.security.v."/etc/security/pam_pwcheck.conf".password,
+ *	"cracklib md5")
  *   (true)
  *
  * $Id$
