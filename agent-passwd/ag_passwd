@@ -321,6 +321,7 @@ sub read_passwd {
 
 	    # such map we would like to export from the read script...
 	    $users{$user_type}{$uid} = {
+		"addit_data"	=> $additional,
 		"cn"		=> $full,
 		"homedirectory"	=> $home,
 		"uid"		=> $username,
@@ -381,12 +382,16 @@ sub write_passwd {
 
 	    my %user	= %{$users_w{$type}{$uid}};
 	    my $pass	= "x";
+	    my $cn	= $user{"cn"} || "";
+	    if (defined $user{"addit_data"} && $user{"addit_data"} ne "") {
+		$cn	.= ",".$user{"addit_data"};
+	    }
 	    my $userline	= join (":", (
 		$user{"uid"} || "",
 		$pass,
 		$uid,
 		$user{"gidnumber"} || 0,
-		$user{"cn"} || "",
+		$cn,
 		$user{"homedirectory"} || "",
 		$user{"loginshell"} || "",
 	    ));

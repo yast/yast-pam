@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 16 09:06:17 CEST 2004 - jsuchome@suse.cz
+
+- fix: do not ignore additional user data (#38973)
+- 2.9.11
+
+-------------------------------------------------------------------
 Fri Apr  2 15:51:52 CEST 2004 - jsuchome@suse.cz
 
 - changed license to GPL
