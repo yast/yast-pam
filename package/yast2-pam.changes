@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 23 16:30:55 CEST 2003 - msvec@suse.cz
+
+- added some fallbacks for SCR access
+- 2.8.3
+
+-------------------------------------------------------------------
 Wed Jul 16 15:06:22 CEST 2003 - jsuchome@suse.de
 
 - added YCP interface for agent (Pam.ycp, PamSettings.ycp) [initial]
