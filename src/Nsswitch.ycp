@@ -1,0 +1,82 @@
+/**
+ * File:	modules/Nsswitch.ycp
+ * Module:	yast2-pam
+ * Summary:	Configuration of /etc/nsswiych.conf
+ * Authors:	Jiri Suchomel <jsuchome@suse.cz>
+ *
+ * $Id$
+ */
+
+{
+    module "Nsswitch";
+
+    import "Message";
+    import "Report";
+
+    /**
+     * Reads a database entry from nsswitch_conf and returns it as a list
+     * @param db eg. "passwd"
+     * @return   eg. ["files", "nis"]
+     */
+    global define list<string> ReadDb (string db) ``{
+	string db_s = (string) SCR::Read (add (.etc.nsswitch_conf, db));
+	if (db_s == nil)
+	{
+	    db_s = "";
+	}
+	return filter (string s, splitstring (db_s, " \t"), ``(s != ""));
+    }
+
+
+    /**
+     * Writes a database entry as a list to nsswitch_conf
+     * @param db eg. "passwd"
+     * @param entries eg. ["files", "nis"]
+     * @return success?
+     */
+    global define boolean WriteDb (string db, list<string> entries) ``{
+	// if there are no entries, delete the key using nil
+	string entry = mergestring (entries, " ");
+	return SCR::Write (add (.etc.nsswitch_conf, db),
+			   entry == ""? nil: entry);
+    }
+    /**
+     * Configures the name service switch for autofs
+     * according to chosen settings
+     * @param start autofs and service (ldap/nis) should be started
+     * @param source for automounter data (ldap/nis)
+     * @return success?
+     */
+    global define boolean WriteAutofs (boolean start, string source) ``{
+
+	boolean ok = true;
+
+	// nsswitch automount:
+	// bracket options not allowed, order does not matter
+	list<string> automount_l = ReadDb ("automount");
+	boolean enabled = contains (automount_l, source);
+	// enable it if it is not enabled yet and both services run
+	if (start && !enabled)
+	{
+	    automount_l = add (automount_l, source);
+	    ok = WriteDb ("automount", automount_l);
+	    ok = ok && SCR::Write (.etc.nsswitch_conf, nil);
+	}
+	// disable it if it is enabled and either service does not run
+	else if (!start && enabled)
+	{
+	    automount_l = filter (string s, automount_l, ``(s != source));
+	    ok = WriteDb ("automount", automount_l);
+	    ok = ok && SCR::Write (.etc.nsswitch_conf, nil);
+	}
+
+	if (!ok)
+	{
+	    Report::Error (Message::ErrorWritingFile ("/etc/nsswitch.conf"));
+	}
+	return ok;
+    }
+
+    // TODO Nis.ycp has also WriteNssUsers, but it uses WritePluses function
+    // for adapting /etc/passwd...
+}

@@ -3,7 +3,8 @@
 module_DATA =		\
     Pam.ycp		\
     PamSettings.ycp	\
-    Autologin.ycp
+    Autologin.ycp	\
+    Nsswitch.ycp
 
 EXTRA_DIST = $(module_DATA)
 

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jul 12 15:51:27 CEST 2004 - jsuchome@suse.cz
+
+- Moved nsswitch.conf agent here from yast2-network.
+- Nsswitch.ycp provides YCP interface to nsswitch agent
+- 2.10.1
+
+-------------------------------------------------------------------
 Mon Jun 28 14:37:32 CEST 2004 - jsuchome@suse.cz
 
 - /etc/default/passwd is used for handling encryption types
