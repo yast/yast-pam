@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 21 15:04:11 CET 2003 - jsuchome@suse.cz
+
+- yast2-packager required
+
+-------------------------------------------------------------------
 Thu Nov 20 15:40:33 CET 2003 - jsuchome@suse.cz
 
 - Autologin.ycp now part of yast2-pam
