@@ -23,7 +23,7 @@
     `IniAgent(
 	[ "/etc/security/pam_pwcheck.conf", "/etc/security/pam_unix2.conf" ],
 	$[
-	    "options" : [ "ignore_case", "global_values"],
+	    "options" : [ "global_values"],
 	    "comments" : [ "^#.*", "^[ \t]*$", ],
 	    "params" : [
 		$[ "match" : [ "^[ \t]*([a-zA-Z0-9_]+)[ \t]*:[ \t]*(.*[^ \t]|)[ \t]*$", "%s:\t%s" ] ]

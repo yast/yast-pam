@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu May 27 17:02:46 CEST 2004 - jsuchome@suse.cz
+
+- ag_passwd: read group password (#41300)
+- 2.9.13
+
+-------------------------------------------------------------------
+Tue May 18 18:16:15 CEST 2004 - jsuchome@suse.cz
+
+- ag_passwd can now read and write multiple +/- lines (#40571)
+- ag_passwd: do not throw away the comments
+- 2.9.12
+
+-------------------------------------------------------------------
 Fri Apr 16 09:06:17 CEST 2004 - jsuchome@suse.cz
 
 - fix: do not ignore additional user data (#38973)

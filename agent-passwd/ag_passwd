@@ -33,6 +33,14 @@ my $plus_line_group 	= "";
 my $plus_line_passwd	= "";
 my $plus_line_shadow	= "";
 
+my @plus_lines_group 	= ();
+my @plus_lines_passwd	= ();
+my @plus_lines_shadow	= ();
+
+my @comments_group 	= ();
+my @comments_passwd	= ();
+my @comments_shadow	= ();
+
 # error number
 my $errno		= 0;
 
@@ -42,12 +50,27 @@ my $error_info		= "";
 # directory where user/group/shadow data should be found
 my $base_directory	 = "/etc";
 
+# compares 2 arrays; return 1 if they are equal
+# (from perlfaq)
+sub same_arrays {
+
+    my ($first, $second) = @_;
+    return 0 unless @$first == @$second;
+    for (my $i = 0; $i < @$first; $i++) {
+	return 0 if $first->[$i] ne $second->[$i];
+    }
+    return 1;
+}
+
+
 #---------------------------------------------
 # read /etc/shadow and prepare global 'shadow_tmp' structure
 
 sub read_shadow {
 
     %shadow_tmp	= ();
+    @plus_lines_shadow	= ();
+    @comments_shadow	= ();
 
     my $o = open SHADOW, "< $base_directory/shadow";
     if (!defined $o) {
@@ -65,7 +88,8 @@ sub read_shadow {
 
 	if ($first eq "#") {
 	    y2warning ("Found comment line in shadow file: '$shadow_entry'");
-	    y2warning ("It will be lost on write!");
+	    y2warning ("It will be moved to the end of file");
+	    push @comments_shadow, $shadow_entry;
 	}
 	elsif ($first ne "+" && $first ne "-")
 	{
@@ -96,6 +120,7 @@ sub read_shadow {
 	else # plus line in /etc/shadow
 	{
 	    $plus_line_shadow = $shadow_entry;
+	    push @plus_lines_shadow, $shadow_entry;
 	}
     }
     close SHADOW;
@@ -110,6 +135,8 @@ sub read_group {
     %groups	= ();
     %gids	= ();
     %groupnames	= ();
+    @plus_lines_group	= ();
+    @comments_group	= ();
 
     my $o = open GROUP, "< $base_directory/group";
     if (!defined $o) {
@@ -125,7 +152,8 @@ sub read_group {
 
 	if ($first eq "#") {
 	    y2warning ("Found comment line in group file: '$group'");
-	    y2warning ("It will be lost on write!");
+	    y2warning ("It will be moved to the end of file");
+	    push @comments_group, $group;
 	}
         elsif ( $first ne "+" && $first ne "-" ) {
 	    
@@ -182,6 +210,7 @@ sub read_group {
 		"gidnumber" 	=> $gid,
 		"userlist"	=> \%userlist,
 		"type"		=> $group_type,
+		"userpassword"	=> $pass,
 		"more_users"	=> {}
 	    };
 
@@ -190,6 +219,7 @@ sub read_group {
 	else # save the possible "+"/"-" entries
         {
 	    $plus_line_group = $group;
+	    push @plus_lines_group, $group;
         }
     }
     close GROUP;
@@ -212,6 +242,8 @@ sub read_passwd {
     %uids	= ();
     %usernames	= ();
     %homes	= ();
+    @plus_lines_passwd	= ();
+    @comments_passwd	= ();
 
     foreach my $user (<PASSWD>) {
 
@@ -222,7 +254,8 @@ sub read_passwd {
 
 	if ($first eq "#") {
 	    y2warning ("Found comment line in passwd file: '$user'");
-	    y2warning ("It will be lost on write!");
+	    y2warning ("It will be moved to the end of file");
+	    push @comments_passwd, $user;
 	}
 	elsif ($first ne "+" && $first ne "-") {
 
@@ -347,6 +380,7 @@ sub read_passwd {
 	else # the "+" entry in passwd
 	{
 	    $plus_line_passwd = $user;
+	    push @plus_lines_passwd, $user;
 	}
     }
     close PASSWD;
@@ -400,8 +434,15 @@ sub write_passwd {
 	    }
 	}
     }
-    if ($plus_line_passwd ne "") {
-	print PASSWD "$plus_line_passwd\n";
+    if (@comments_passwd > 0) {
+	foreach my $comment (@comments_passwd) {
+	    print PASSWD "$comment\n";
+	}
+    }
+    if (@plus_lines_passwd > 0) {
+	foreach my $plusline (@plus_lines_passwd) {
+	    print PASSWD "$plusline\n";
+	}
     }
     close PASSWD;
     return 1;
@@ -456,8 +497,15 @@ sub write_shadow {
 	    }
 	}
     }
-    if ($plus_line_shadow ne "") {
-	print SHADOW "$plus_line_shadow\n";
+    if (@comments_shadow > 0) {
+	foreach my $comment (@comments_shadow) {
+	    print SHADOW "$comment\n";
+	}
+    }
+    if (@plus_lines_shadow > 0) {
+	foreach my $plusline (@plus_lines_shadow) {
+	    print SHADOW "$plusline\n";
+	}
     }
     close SHADOW;
 }
@@ -510,9 +558,19 @@ sub write_group {
 	    }
 	}
     }
-    if ($plus_line_group ne "") {
-	print GROUP "$plus_line_group\n";
+    if (@comments_group > 0) {
+	foreach my $comment (@comments_group) {
+	    print GROUP "$comment\n";
+	}
     }
+    if (@plus_lines_group > 0) {
+	foreach my $plusline (@plus_lines_group) {
+	    print GROUP "$plusline\n";
+	}
+    }
+#    if ($plus_line_group ne "") {
+#	print GROUP "$plus_line_group\n";
+#    }
     close GROUP;
 }
 
@@ -651,13 +709,34 @@ while ( <STDIN> )
 	    ycp::Return (\%{$groupnames{"system"}});
 	}
 	elsif ( $path eq '.passwd.plusline' ) {
+	    y2warning ("$command $path is deprecated, use '.passwd.pluslines' instead!");
 	    ycp::Return ($plus_line_passwd);
 	}
 	elsif ( $path eq '.shadow.plusline' ) {
+	    y2warning ("$command $path is deprecated, use '.shadow.pluslines' instead!");
 	    ycp::Return ($plus_line_shadow);
 	}
 	elsif ( $path eq '.group.plusline' ) {
+	    y2warning ("$command $path is deprecated, use '.group.pluslines' instead!");
 	    ycp::Return ($plus_line_group);
+	}
+	elsif ( $path eq '.passwd.pluslines' ) {
+	    ycp::Return (\@plus_lines_passwd);
+	}
+	elsif ( $path eq '.shadow.pluslines' ) {
+	    ycp::Return (\@plus_lines_shadow);
+	}
+	elsif ( $path eq '.group.pluslines' ) {
+	    ycp::Return (\@plus_lines_group);
+	}
+	elsif ( $path eq '.passwd.comments' ) {
+	    ycp::Return (\@comments_passwd);
+	}
+	elsif ( $path eq '.group.comments' ) {
+	    ycp::Return (\@comments_group);
+	}
+	elsif ( $path eq '.shadow.comments' ) {
+	    ycp::Return (\@comments_shadow);
 	}
 	else {
 	    y2error ("wrong path ($path) or argument: ", ref ($argument));
@@ -691,29 +770,62 @@ while ( <STDIN> )
 	    }
 	}
 	elsif ( $path eq '.passwd.plusline' ) {
+	    y2warning ("$command $path deprecated; use '.passwd.pluslines' instead!");
 	    if ($argument eq $plus_line_passwd) {
 		ycp::Return ("false");
 	    }
 	    else {
-		$plus_line_passwd = $argument;
+		@plus_lines_passwd	= ($argument);
 		ycp::Return ("true");
 	    }
 	}
 	elsif ( $path eq '.group.plusline' ) {
+	    y2warning ("$command $path deprecated; use '.group.pluslines' instead!");
 	    if ($argument eq $plus_line_group) {
 		ycp::Return ("false");
 	    }
 	    else {
-		$plus_line_group = $argument;
+		@plus_lines_group	= ($argument);
 		ycp::Return ("true");
 	    }
 	}
 	elsif ( $path eq '.shadow.plusline' ) {
+	    y2warning ("$command $path deprecated; use '.shadow.pluslines' instead!");
 	    if ($argument eq $plus_line_shadow) {
 		ycp::Return ("false");
 	    }
 	    else {
-		$plus_line_shadow = $argument;
+		@plus_lines_shadow	= ($argument);
+		ycp::Return ("true");
+	    }
+	}
+	elsif ($path eq '.passwd.pluslines' && ref ($argument) eq "ARRAY") {
+	    if (same_arrays (\@plus_lines_passwd, $argument)) {
+		ycp::Return ("false");
+	    }
+	    else {
+		@plus_lines_passwd = @$argument;
+		y2milestone ("new plus lines in passwd: ", @plus_lines_passwd);
+		ycp::Return ("true");
+	    }
+	}
+	elsif ($path eq '.shadow.pluslines' && ref ($argument) eq "ARRAY") {
+	    if (same_arrays (\@plus_lines_shadow, $argument)) {
+		ycp::Return ("false");
+	    }
+	    else {
+		@plus_lines_shadow = @$argument;
+		y2milestone ("new plus lines in shadow: ", @plus_lines_shadow);
+		ycp::Return ("true");
+	    }
+	}
+	elsif ($path eq '.group.pluslines' && ref ($argument) eq "ARRAY") {
+	    if (same_arrays (\@plus_lines_group, $argument)) {
+		ycp::Return ("false");
+	    }
+	    else {
+		@plus_lines_group = @$argument;
+		y2milestone ("new plus lines in group: ", @plus_lines_group);
 		ycp::Return ("true");
 	    }
 	}
