@@ -84,10 +84,10 @@ global define map GetFile (string file) ``{
  * @example
  * SetValues ("pwcheck", "password", [ "cracklib", "md5" ])
  */
-global define boolean SetValues (string file, string type, list values) ``{
+global define boolean SetValues (string file, string type, list<string> values) ``{
     string filename = Filename (file);
     return SCR::Write (add (add (.etc.security.v, filename), type),
-	mergestring (values, " ")) == true;
+	mergestring ((list<string>)values, " ")) == true;
 }
 
 /**
@@ -99,9 +99,9 @@ global define boolean SetValues (string file, string type, list values) ``{
  * AddValue ("pwcheck", "password", "md5" ])
  */
 global define boolean AddValue (string file, string type, string value) ``{
-    list values = GetValues (file, type);
+    list<string> values = GetValues (file, type);
     // value must be first (to avoid adding to the commented rest of line)
-    return SetValues (file, type, union ([value], values));
+    return SetValues (file, type, (list<string>) union ([value], values));
 }
 
 /**

@@ -37,10 +37,10 @@ PamAgent::~PamAgent()
 /**
  * Dir
  */
-YCPValue PamAgent::Dir(const YCPPath& path)
+YCPList PamAgent::Dir(const YCPPath& path)
 {
     y2error("Wrong path '%s' in Read().", path->toString().c_str());
-    return YCPVoid();
+    return YCPNull();
 }
 
 struct pam_config {
@@ -263,7 +263,8 @@ read_unix2_config (FILE *fp, struct pam_config *data)
  * module is the name of a PAM module
  *
  */
-YCPValue PamAgent::Read(const YCPPath &path, const YCPValue& arg = YCPNull())
+YCPValue PamAgent::Read(const YCPPath &path, const YCPValue& arg,
+			const YCPValue& opt)
 {
   y2debug ("PamAgent::Read(%s)", path->toString().c_str());
 
@@ -502,7 +503,7 @@ remove_string (const char *str, const char *rem)
 /**
  * Write
  */
-YCPValue PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPValue& arg = YCPNull())
+YCPBoolean PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPValue& arg = YCPNull())
 {
   int add;
   char *param;
@@ -526,7 +527,7 @@ YCPValue PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPVa
   else
     {
       y2debug ("PamAgent::Write: don't know what todo with %s", param);
-      return YCPVoid();
+      return YCPBoolean(false);
     }
   ++param;
 
@@ -554,14 +555,14 @@ YCPValue PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPVa
 	  if (fp == NULL)
 	    {
 	      y2warning ("file not found: '%s'", conf_name.c_str());
-	      return YCPVoid();
+	      return YCPBoolean(false);
 	    }
 
 	  fd = mkstemp (config_tmp);
 	  if (fd < 0)
 	    {
 	      y2error ("PamAgent::Write: cannot create tmp file");
-	      return YCPVoid();
+	      return YCPBoolean(false);
 	    }
 	  fout = fdopen (fd, "w");
 
@@ -648,14 +649,14 @@ YCPValue PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPVa
 	    {
 	      y2warning ("unknown config file in path '%s'",
 			 path->toString().c_str());
-	      return YCPVoid();
+	      return YCPBoolean(false);
 	    }
 
 	  fd =  mkstemp (config_tmp);
 	  if (fd < 0)
 	    {
 	      y2error ("PamAgent::Write: cannot create tmp file");
-	      return YCPVoid();
+	      return YCPBoolean(false);
 	    }
 	  fout = fdopen (fd, "w");
 
@@ -747,7 +748,7 @@ YCPValue PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPVa
 	}
     }
   y2error ("unknown command in path '%s'", path->toString().c_str());
-  return YCPVoid();
+  return YCPBoolean(false);
 }
 
 /**
@@ -755,7 +756,7 @@ YCPValue PamAgent::Write(const YCPPath &path, const YCPValue& value, const YCPVa
  */
 YCPValue PamAgent::otherCommand(const YCPTerm& term)
 {
-    string sym = term->symbol()->symbol();
+    string sym = term->name();
 
     if (sym == "PamAgent") {
         /* Your initialization */
