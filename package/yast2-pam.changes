@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 18 11:11:37 CEST 2004 - jsuchome@suse.cz
+
+- correctly check if entries of /etc/default/passwd were modified
+- 2.10.3
+
+-------------------------------------------------------------------
 Tue Jul 27 13:12:08 CEST 2004 - jsuchome@suse.cz
 
 - PamSettings: read/write also group encryption method

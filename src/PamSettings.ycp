@@ -171,6 +171,10 @@ global define string GetDefaultValue (string key) {
  * SetValues ("md5")
  */
 global define boolean SetHashMethod (string hash) {
+    if (GetHashMethod () != hash)
+    {
+	default_passwd_modified	= true;
+    }
     default_passwd_modified	= true;
     return SCR::Write (.etc.default.passwd.crypt, hash);
 }
@@ -180,7 +184,10 @@ global define boolean SetHashMethod (string hash) {
  * @param hash the new value of hash
  */
 global define boolean SetGroupHashMethod (string hash) {
-    default_passwd_modified	= true;
+    if (GetGroupHashMethod () != hash)
+    {
+	default_passwd_modified	= true;
+    }
     return SCR::Write (.etc.default.passwd.group_crypt, hash);
 }
 
@@ -188,6 +195,10 @@ global define boolean SetGroupHashMethod (string hash) {
  * Set the value of key in /etc/default/passwd
  */
 global define boolean SetDefaultValue (string key, string value) {
+    if (GetDefaultValue (key) != value)
+    {
+	default_passwd_modified	= true;
+    }
     return SCR::Write (add (.etc.default.passwd, key), value);
 }
 
