@@ -13,8 +13,6 @@
 #ifndef _PamAgent_h
 #define _PamAgent_h
 
-#undef y2log_component
-#define y2log_component "ag_pam"
 #include <Y2.h>
 #include <scr/SCRAgent.h>
 #include <scr/SCRInterpreter.h>

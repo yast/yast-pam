@@ -1,16 +1,10 @@
 /**
- * File:
- *   pam.scr
- * Summary:
- *   SCR Agent for reading/writing/accessing PAM config files
- * Access:
- *   read/write
- * Authors:
- *   Thorsten Kukuk <kukuk@suse.de>
- * See:
- *   anyagent
- *   libscr
- *   man pam
+ * File:	pam.scr
+ * Summary:	Agent for accessing PAM config files
+ * Access:	read / write
+ * Authors:	Thorsten Kukuk <kukuk@suse.de>
+ * See:		pam(8)
+ *
  * Example:
  *   Read(.pam.<service>)
  *   (["type", "control", "module", "arguments", "comments"])
@@ -22,10 +16,7 @@
  *   (["type", "control", "module", "arguments", "comments"])
  *
  * $Id$
- *
- * SOME USEFUL INFORMATION ON THE AGENT
  */
 .pam
 
 `ag_pam()
-
