@@ -29,4 +29,5 @@ Summary:	pam(8) agent
 @plugindir@/libpy2ag_pam.so
 @plugindir@/libpy2ag_pam.la
 @scrconfdir@/*.scr
+@agentdir@/ag_passwd
 %doc @docdir@

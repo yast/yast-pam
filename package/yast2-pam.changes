@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 10 14:20:26 CET 2004 - jsuchome@suse.cz
+
+- agent-passwd moved here from yast2-users
+- 2.9.5
+
+-------------------------------------------------------------------
 Wed Mar 10 10:50:00 CET 2004 - jsuchome@suse.cz
 
 - fixed NFB: yast2-indstalltion no more necessary
