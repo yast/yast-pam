@@ -56,7 +56,7 @@ global define list GetValues (string file, string type) ``{
     string filename = Filename (file);
     string ret = SCR::Read (add (add (.etc.security.v, filename), type));
     if(ret == nil) return [];
-    return splitstring (ret, " ");
+    return splitstring (ret, " \t");
 }
 
 /**

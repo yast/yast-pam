@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug  4 16:00:50 CEST 2003 - jsuchome@suse.de
+
+- \t is also separator in config files (besides space)
+
+-------------------------------------------------------------------
 Wed Jul 23 16:30:55 CEST 2003 - msvec@suse.cz
 
 - added some fallbacks for SCR access
