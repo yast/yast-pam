@@ -37,6 +37,8 @@ global define list GetFiles () ``{
 
     if (security_files == [])
 	security_files = SCR::Dir (.etc.security.section);
+    if (security_files == nil)
+	security_files = [];
     return security_files;
 }
 
@@ -52,8 +54,9 @@ global define list GetFiles () ``{
 global define list GetValues (string file, string type) ``{
 
     string filename = Filename (file);
-    return splitstring (
-	SCR::Read (add (add (.etc.security.v, filename), type)), " ");
+    string ret = SCR::Read (add (add (.etc.security.v, filename), type));
+    if(ret == nil) return [];
+    return splitstring (ret, " ");
 }
 
 /**
@@ -84,7 +87,7 @@ global define map GetFile (string file) ``{
 global define boolean SetValues (string file, string type, list values) ``{
     string filename = Filename (file);
     return SCR::Write (add (add (.etc.security.v, filename), type),
-	mergestring (values, " "));
+	mergestring (values, " ")) == true;
 }
 
 /**
