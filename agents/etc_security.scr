@@ -20,7 +20,7 @@
 .etc.security
 
 `ag_ini(
-    IniAgent(
+    `IniAgent(
 	[ "/etc/security/pam_pwcheck.conf", "/etc/security/pam_unix2.conf" ],
 	$[
 	    "options" : [ "ignore_case", "global_values"],
