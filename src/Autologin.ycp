@@ -29,13 +29,14 @@ global boolean pw_less = false;
 /**
  * Is autologin feature available?
  */
-global boolean available = ProductFeatures::enable_autologin;
+global boolean available = true;
 
 /**
  * Is autogion used? Usualy true when user is not empty, but for the first
- * time (during installation), this is true by default although user is ""
+ * time (during installation), this can be true by default although user is ""
+ * (depends on the control file)
  */
-global boolean used = true;
+global boolean used = ProductFeatures::enable_autologin;
 
 /**
  * Autologin settings modified?

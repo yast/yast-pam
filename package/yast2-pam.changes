@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 10 10:50:00 CET 2004 - jsuchome@suse.cz
+
+- fixed NFB: yast2-indstalltion no more necessary
+- 2.9.4
+
+-------------------------------------------------------------------
 Thu Mar  4 21:43:04 CET 2004 - jsuchome@suse.cz
 
 - check ProductFeatures if Autologin is available (#35023)
