@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jul 27 13:12:08 CEST 2004 - jsuchome@suse.cz
+
+- PamSettings: read/write also group encryption method
+- Nsswitch: add Write function (write modified file to disk)
+- 2.10.2
+
+-------------------------------------------------------------------
 Mon Jul 12 15:51:27 CEST 2004 - jsuchome@suse.cz
 
 - Moved nsswitch.conf agent here from yast2-network.

@@ -1,7 +1,7 @@
 /**
  * File:	modules/Nsswitch.ycp
  * Module:	yast2-pam
- * Summary:	Configuration of /etc/nsswiych.conf
+ * Summary:	Configuration of /etc/nsswitch.conf
  * Authors:	Jiri Suchomel <jsuchome@suse.cz>
  *
  * $Id$
@@ -75,6 +75,15 @@
 	    Report::Error (Message::ErrorWritingFile ("/etc/nsswitch.conf"));
 	}
 	return ok;
+    }
+
+    /**
+     * Writes the edited files to the disk
+     * @return true on success
+     */
+    global define boolean Write () {
+
+	return SCR::Write (.etc.nsswitch_conf, nil);
     }
 
     // TODO Nis.ycp has also WriteNssUsers, but it uses WritePluses function

@@ -147,6 +147,24 @@ global define string GetHashMethod () {
 }
 
 /**
+ * Reads the value of default crypt hash for group passwords
+ */
+global define string GetGroupHashMethod () {
+
+    any g = SCR::Read (.etc.default.passwd.group_crypt);
+    if (g != nil && is (g, string) && (string) g != "")
+	return (string) g;
+    else return GetHashMethod ();
+}
+
+/**
+ * Reads the value from /etc/default/passwd
+ */
+global define string GetDefaultValue (string key) {
+    return (string) SCR::Read (add (.etc.default.passwd, key));
+}
+
+/**
  * Sets the new value of default crypt hash - modifies /etc/default/passwd !
  * @param hash the new value of hash
  * @example
@@ -156,6 +174,24 @@ global define boolean SetHashMethod (string hash) {
     default_passwd_modified	= true;
     return SCR::Write (.etc.default.passwd.crypt, hash);
 }
+
+/**
+ * Sets the new value of default crypt hash for group passwords
+ * @param hash the new value of hash
+ */
+global define boolean SetGroupHashMethod (string hash) {
+    default_passwd_modified	= true;
+    return SCR::Write (.etc.default.passwd.group_crypt, hash);
+}
+
+/**
+ * Set the value of key in /etc/default/passwd
+ */
+global define boolean SetDefaultValue (string key, string value) {
+    return SCR::Write (add (.etc.default.passwd, key), value);
+}
+
+
 
 //---------------------------- common functions ------------------------------
 
