@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar  4 21:43:04 CET 2004 - jsuchome@suse.cz
+
+- check ProductFeatures if Autologin is available (#35023)
+- 2.9.3 
+
+-------------------------------------------------------------------
 Mon Mar  1 18:48:26 CET 2004 - jsuchome@suse.cz
 
 - map/list typing

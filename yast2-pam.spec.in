@@ -1,8 +1,8 @@
 @HEADER-COMMENT@
-# neededforbuild gpp libgpp libxcrypt libxcrypt-devel yast2-devel-packages
+# neededforbuild gpp libgpp libxcrypt libxcrypt-devel yast2-devel-packages yast2-installation
 
 @HEADER@
-Requires:	yast2-core yast2-packager
+Requires:	yast2-core yast2-packager yast2-installation
 
 Provides:	yast2-agent-pam
 Obsoletes:	yast2-agent-pam

@@ -13,6 +13,7 @@ module "Autologin";
 textdomain "pam";
 
 import "Popup";
+import "ProductFeatures";
 import "Require";
 
 /**
@@ -28,7 +29,7 @@ global boolean pw_less = false;
 /**
  * Is autologin feature available?
  */
-global boolean available = true;
+global boolean available = ProductFeatures::enable_autologin;
 
 /**
  * Is autogion used? Usualy true when user is not empty, but for the first
@@ -84,6 +85,7 @@ global define boolean Write (boolean write_only) ``{
     if (!write_only)
 	SCR::Execute (.target.bash, "/sbin/SuSEconfig --module kdm3");
 
+    modified = false;
     return true;
 }
 
