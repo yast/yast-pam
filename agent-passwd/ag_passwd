@@ -178,7 +178,7 @@ sub read_group {
 		$users_groups{$u}{$groupname}	= 1;
 	    }
 	    $groups{$group_type}{$gid} = {
-		"groupname"	=> $groupname,
+		"cn"		=> $groupname,
 		"gidNumber" 	=> $gid,
 		"userlist"	=> \%userlist,
 		"type"		=> $group_type,
@@ -250,7 +250,7 @@ sub read_passwd {
 	    }
 	    if ($group_type ne "")
 	    {
-		$groupname = $groups{$group_type}{$gid}{"groupname"};
+		$groupname = $groups{$group_type}{$gid}{"cn"};
 	    
 		# modify default group's more_users entry
 		$groups{$group_type}{$gid}{"more_users"}{$username}	= 1;
@@ -272,9 +272,6 @@ sub read_passwd {
 		    $last_uid{"local"} = $uid;
 		}
 	    }
-	    # recode the fullname to utf-8 FIXME (and back during write)
-	    # use I18N::Langinfo qw(langinfo ABDAY_1 YESSTR NOSTR CODESET);
-	    # my $encoding = langinfo CODESET;
 	    my $encoding = "";
 	    if ($encoding ne "") {
 		from_to ($full, $encoding, "utf-8");
@@ -326,7 +323,7 @@ sub read_passwd {
 	    $users{$user_type}{$uid} = {
 		"cn"		=> $full,
 		"homeDirectory"	=> $home,
-		"username"	=> $username,
+		"uid"		=> $username,
 		"uidNumber"	=> $uid,
 		"gidNumber"	=> $gid,
 		"loginShell"	=> $shell,
@@ -381,7 +378,7 @@ sub write_passwd {
 	    my %user	= %{$users_w{$type}{$uid}};
 	    my $pass	= "x";
 	    my $userline	= join (":", (
-		$user{"username"} || "",
+		$user{"uid"} || "",
 		$pass,
 		$uid,
 		$user{"gidNumber"} || 0,
@@ -407,6 +404,11 @@ sub write_passwd {
 sub write_shadow {
 
     my %shadow_w	= %{$_[0]};
+
+    # do not allow user to remove whole shadow
+    if (!%shadow_w) {
+	%shadow_w	= %shadow;
+    }
 
     my $o = open SHADOW, "> $base_directory/shadow";
     if (!defined $o) {
@@ -474,7 +476,7 @@ sub write_group {
 		$pass 	= $group{"userPassword"};
 	    }
 	    my @group_entry	= (
-		$group{"groupname"},
+		$group{"cn"},
 		$pass,
 		$gid,
 		join (",", sort keys %{$group{"userlist"}})

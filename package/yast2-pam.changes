@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Mar 15 11:18:15 CET 2004 - jsuchome@suse.cz
+
+- changed internal key names: "username" -> "uid", "groupname" -> "cn"
+- 2.9.6
+
+-------------------------------------------------------------------
 Wed Mar 10 14:20:26 CET 2004 - jsuchome@suse.cz
 
 - agent-passwd moved here from yast2-users
