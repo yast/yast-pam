@@ -7,6 +7,8 @@ Requires:	yast2-core
 
 Provides:	yast2-agent-pam
 Obsoletes:	yast2-agent-pam
+Provides:	yast2-agent-pam-devel
+Obsoletes:	yast2-agent-pam-devel
 
 Summary:	pam(8) agent
 
