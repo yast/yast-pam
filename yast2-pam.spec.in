@@ -1,5 +1,5 @@
 @HEADER-COMMENT@
-# neededforbuild gpp libgpp libxcrypt libxcrypt-devel yast2-devel-packages yast2
+# neededforbuild yast2-devel-packages yast2
 
 @HEADER@
 Requires:	yast2-core yast2-packager yast2
@@ -9,7 +9,9 @@ Obsoletes:	yast2-agent-pam
 Provides:	yast2-agent-pam-devel
 Obsoletes:	yast2-agent-pam-devel
 
-Summary:	pam(8) agent
+BuildArchitectures:     noarch
+
+Summary:	pam libraries for YaST
 
 %description
 -
@@ -25,9 +27,6 @@ Summary:	pam(8) agent
 %files
 %defattr(-,root,root)
 @moduledir@/*
-@plugindir@/libpy2ag_pam.so.*
-@plugindir@/libpy2ag_pam.so
-@plugindir@/libpy2ag_pam.la
 @scrconfdir@/*.scr
 @agentdir@/ag_passwd
 %doc @docdir@

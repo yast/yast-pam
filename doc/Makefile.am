@@ -8,5 +8,5 @@ SUBDIRS = autodocs
 
 htmldir = $(docdir)
 
-html_DATA = pam.html TODO.txt
+html_DATA = pam.html
 EXTRA_DIST = $(html_DATA)

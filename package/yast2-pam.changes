@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Feb  3 09:57:49 CET 2005 - jsuchome@suse.cz
+
+- dropped agent-pam
+- 2.11.1 
+
+-------------------------------------------------------------------
 Fri Jan 21 15:33:07 CET 2005 - jsuchome@suse.cz
 
 - use Package instead of Require

@@ -4,7 +4,7 @@
 <!-- $Id$ -->
 </HEAD>
 <BODY>
-<H1>Pam module(s) description</H1>
+<H1>Pam module description</H1>
 <HR>
 
 <H2>Purpose</H2> 
@@ -15,14 +15,13 @@ Pam module it used for easier acces to PAM services form YaST modules.
 
 Some of the PAM settings are configured via files in /etc/security directory;
 for these the <tt>security agent</tt> (based on agent-ini) is used. See it's
-source <a href="../agents/etc_security.scr">here</a>.<br>
+source <a href="../agents/etc_security.scr">here</a>.
+<br>
 The YaST interface for this agent is provided by
 <a href="autodocs/PamSettings.html">PamSettings module</a>.
+
 <p>
-Some settings need to work directly with files in /etc/pam.d directory. These
-are handled by <tt>ag_pam</tt> (see <a href="../agent-pam/doc/agent-pam.html">
-its own documentation</a>) and on YaST level by
-<a href="autodocs/Pam.html">Pam module</a>.
+yast2-pam package also contains the module for <a href="autodocs/Autologin.html">Autologin configuration</a> and module for <a href="autodocs/Nsswitch.html">configuration of /etc/nsswitch.conf</a>. 
 
 <p>
 <I>The complete development documentation of YCP code is available in the
