@@ -124,16 +124,12 @@ global define boolean RemoveValue (string file, string type, string value) ``{
 }
 
 /**
- * Writes the files to the disk
- * @param files list of file names
+ * Writes all edited files to the disk
  * @return true on success
  */
 global define boolean Write (list files) ``{
 
-    return foreach (string name, (list<string>) files, ``{
-	string filename = Filename (name);
-	return SCR::Write (add (.etc.security.v, filename), nil);
-    });
+    return SCR::Write (.etc.security, nil);
 }
 
 }//EOF

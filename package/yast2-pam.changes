@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 17 11:31:44 CET 2004 - jsuchome@suse.cz
+
+- fix of writing /etc/security/pam*conf files (#35721)
+
+-------------------------------------------------------------------
 Mon Mar 15 11:18:15 CET 2004 - jsuchome@suse.cz
 
 - changed internal key names: "username" -> "uid", "groupname" -> "cn"
