@@ -83,14 +83,14 @@ sub read_shadow {
 		return 3;
 	    }
 	    $shadow_tmp{$uname} = {
-		"shadowLastChange"	=> $last_change || 0,
-		"shadowWarning"		=> $warn,
-		"shadowInactive"	=> $inact,
-		"shadowExpire"		=> $expire,
-		"shadowMin"		=> $min		|| 0,
-		"shadowMax"		=> $max		|| 0,
-		"shadowFlag"		=> $flag,
-		"userPassword"		=> $pass	|| ""
+		"shadowlastchange"	=> $last_change || 0,
+		"shadowwarning"		=> $warn,
+		"shadowinactive"	=> $inact,
+		"shadowexpire"		=> $expire,
+		"shadowmin"		=> $min		|| 0,
+		"shadowmax"		=> $max		|| 0,
+		"shadowflag"		=> $flag,
+		"userpassword"		=> $pass	|| ""
 	    };
 	}
 	else # plus line in /etc/shadow
@@ -179,7 +179,7 @@ sub read_group {
 	    }
 	    $groups{$group_type}{$gid} = {
 		"cn"		=> $groupname,
-		"gidNumber" 	=> $gid,
+		"gidnumber" 	=> $gid,
 		"userlist"	=> \%userlist,
 		"type"		=> $group_type,
 		"more_users"	=> {}
@@ -322,14 +322,14 @@ sub read_passwd {
 	    # such map we would like to export from the read script...
 	    $users{$user_type}{$uid} = {
 		"cn"		=> $full,
-		"homeDirectory"	=> $home,
+		"homedirectory"	=> $home,
 		"uid"		=> $username,
-		"uidNumber"	=> $uid,
-		"gidNumber"	=> $gid,
-		"loginShell"	=> $shell,
+		"uidnumber"	=> $uid,
+		"gidnumber"	=> $gid,
+		"loginshell"	=> $shell,
 		"groupname"	=> $groupname,
 		"grouplist"	=> \%grouplist,
-		"userPassword"	=> "x",
+		"userpassword"	=> "x",
 		"type"		=> $user_type
 	    };
 
@@ -381,10 +381,10 @@ sub write_passwd {
 		$user{"uid"} || "",
 		$pass,
 		$uid,
-		$user{"gidNumber"} || 0,
+		$user{"gidnumber"} || 0,
 		$user{"cn"} || "",
-		$user{"homeDirectory"} || "",
-		$user{"loginShell"} || "",
+		$user{"homedirectory"} || "",
+		$user{"loginshell"} || "",
 	    ));
 	    if (defined $userline) {
 		print PASSWD "$userline\n";
@@ -424,14 +424,14 @@ sub write_shadow {
 	    my %shadow_entry	= %{$shadow_w{$type}{$uname}};
 	    my $shadowline	= join (":", (
 		$uname,
-		$shadow_entry{"userPassword"} || "",
-		$shadow_entry{"shadowLastChange"} || 0,
-		$shadow_entry{"shadowMin"} || 0,
-		$shadow_entry{"shadowMax"} || 0,
-		$shadow_entry{"shadowWarning"},
-		$shadow_entry{"shadowInactive"},
-		$shadow_entry{"shadowExpire"},
-		$shadow_entry{"shadowFlag"}
+		$shadow_entry{"userpassword"} || "",
+		$shadow_entry{"shadowlastchange"} || 0,
+		$shadow_entry{"shadowmin"} || 0,
+		$shadow_entry{"shadowmax"} || 0,
+		$shadow_entry{"shadowwarning"},
+		$shadow_entry{"shadowinactive"},
+		$shadow_entry{"shadowexpire"},
+		$shadow_entry{"shadowflag"}
 	    ));
 	    if (defined $shadowline) {
 		print SHADOW "$shadowline\n";
@@ -472,8 +472,8 @@ sub write_group {
 
 	    my %group	= %{$groups_w{$type}{$gid}};
 	    my $pass	= "x";
-	    if (defined $group{"userPassword"}) {
-		$pass 	= $group{"userPassword"};
+	    if (defined $group{"userpassword"}) {
+		$pass 	= $group{"userpassword"};
 	    }
 	    my @group_entry	= (
 		$group{"cn"},
