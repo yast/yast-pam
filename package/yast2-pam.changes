@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 28 14:14:45 CET 2003 - jsuchome@suse.cz
+
+- syntax fixes for new interpreter
+
+-------------------------------------------------------------------
 Fri Nov 21 15:04:11 CET 2003 - jsuchome@suse.cz
 
 - yast2-packager required
