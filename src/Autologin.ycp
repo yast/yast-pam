@@ -12,9 +12,9 @@
 module "Autologin";
 textdomain "pam";
 
+import "Package";
 import "Popup";
 import "ProductFeatures";
-import "Require";
 
 /**
  * User to log in automaticaly
@@ -49,8 +49,9 @@ global boolean modified = false;
  */
 global define boolean Read () ``{
 
-    if (SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER) != "kdm" ||
-	!Require::IsAnyPackageInstalled (["kdebase3-kdm"]))
+    if (SCR::Read (.target.size, "/etc/sysconfig/displaymanager") == -1 ||
+	SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER) != "kdm" ||
+	!Package::Installed ("kdebase3-kdm"))
     {
 	available = false;
 	user = "";

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jan 21 15:33:07 CET 2005 - jsuchome@suse.cz
+
+- use Package instead of Require
+- 2.11.0 
+
+-------------------------------------------------------------------
 Wed Aug 18 11:11:37 CEST 2004 - jsuchome@suse.cz
 
 - correctly check if entries of /etc/default/passwd were modified

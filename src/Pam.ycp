@@ -12,9 +12,6 @@
 
 module "Pam";
 
-import "PamSettings";
-
-
 /**
  * Remove option from the line in /etc/pam.d/* file
  * @param file name of file in /etc/pam.d directory
