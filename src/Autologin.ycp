@@ -10,11 +10,9 @@
 {
 
 module "Autologin";
+textdomain "pam";
 
 import "Popup";
-
-textdomain "base";
-
 import "Require";
 
 /**
