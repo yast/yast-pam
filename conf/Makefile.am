@@ -1,5 +1,5 @@
 #
-# Makefile.am for y2a_pam/conf
+# Makefile.am for pam/conf
 #
 
 scrconf_DATA = pam.scr

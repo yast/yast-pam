@@ -1,5 +1,5 @@
 #
-# Makefile.am for y2a_pam/testsuite
+# Makefile.am for pam/testsuite
 #
 
 AUTOMAKE_OPTIONS = dejagnu

@@ -1,5 +1,5 @@
 #
-# Makefile.am for y2a_pam/doc/autodocs
+# Makefile.am for pam/doc/autodocs
 #
 # $Id$
 #
