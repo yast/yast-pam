@@ -12,7 +12,20 @@
 
 module "PamSettings";
 
-list security_files = [];
+list<string> security_files = [];
+
+/**
+ * Returns list of files currently handled by the module
+ * @return list
+ */
+global define list<string> GetFiles () ``{
+
+    if (security_files == [])
+	security_files = (list<string>) SCR::Dir (.etc.security.section);
+    if (security_files == nil)
+	security_files = [];
+    return security_files;
+}
 
 /**
  * Form absolute path name.
@@ -22,24 +35,11 @@ list security_files = [];
 define string Filename (string name) ``{
 
     string ret = name;
-    foreach (`file, GetFiles (), ``{
+    foreach (string file, GetFiles (), ``{
 	if (issubstring (file, name))
 	    ret = file;
     });
     return ret;
-}
-
-/**
- * Returns list of files currently handled by the module
- * @return list
- */
-global define list GetFiles () ``{
-
-    if (security_files == [])
-	security_files = SCR::Dir (.etc.security.section);
-    if (security_files == nil)
-	security_files = [];
-    return security_files;
 }
 
 /**
@@ -51,10 +51,10 @@ global define list GetFiles () ``{
  * @example
  * GetValues ("pwcheck", "password") returns [ "nullok", "cracklib" ]
  */
-global define list GetValues (string file, string type) ``{
+global define list<string> GetValues (string file, string type) ``{
 
     string filename = Filename (file);
-    string ret = SCR::Read (add (add (.etc.security.v, filename), type));
+    string ret = (string) SCR::Read (add (add (.etc.security.v, filename), type));
     if(ret == nil) return [];
     return splitstring (ret, " \t");
 }
@@ -70,7 +70,7 @@ global define map GetFile (string file) ``{
 
     map ret = $[];
     string filename = Filename (file);
-    foreach (`type, SCR::Dir (add (.etc.security.v, filename)), ``{
+    foreach (string type, SCR::Dir (add (.etc.security.v, filename)), ``{
 	ret [type] = GetValues (filename, type);
     });
     return ret;
@@ -113,8 +113,8 @@ global define boolean AddValue (string file, string type, string value) ``{
  * RemoveValue ("pwcheck", "password", "md5" ])
  */
 global define boolean RemoveValue (string file, string type, string value) ``{
-    list values = GetValues (file, type);
-    return SetValues (file, type, filter (`v, values, ``{
+    list<string> values = GetValues (file, type);
+    return SetValues (file, type, filter (string v, values, ``{
 	// this is for options like "minlen=5" etc.
 	if (!issubstring (v, "="))
 	    return v != value;
