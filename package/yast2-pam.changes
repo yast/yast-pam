@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Nov 20 15:40:33 CET 2003 - jsuchome@suse.cz
+
+- Autologin.ycp now part of yast2-pam
+- 2.9.0
+
+-------------------------------------------------------------------
 Thu Nov 13 13:00:03 CET 2003 - msvec@suse.cz
 
 - migrated to doxygen

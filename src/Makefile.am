@@ -4,6 +4,7 @@
 
 module_DATA =		\
     Pam.ycp		\
-    PamSettings.ycp
+    PamSettings.ycp	\
+    Autologin.ycp
 
 EXTRA_DIST = $(module_DATA)
