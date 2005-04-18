@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Apr 18 17:24:55 CEST 2005 - jsuchome@suse.cz
+
+- updated for new interface of ProductFeatures.ycp
+- 2.12.0
+
+-------------------------------------------------------------------
 Thu Feb  3 09:57:49 CET 2005 - jsuchome@suse.cz
 
 - dropped agent-pam

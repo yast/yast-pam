@@ -36,7 +36,7 @@ global boolean available = true;
  * time (during installation), this can be true by default although user is ""
  * (depends on the control file)
  */
-global boolean used = ProductFeatures::enable_autologin;
+global boolean used = false;
 
 /**
  * Autologin settings modified?
@@ -48,6 +48,8 @@ global boolean modified = false;
  * @return used?
  */
 global define boolean Read () ``{
+
+    used = ProductFeatures::GetBooleanFeature ("globals", "enable_autologin");
 
     if (SCR::Read (.target.size, "/etc/sysconfig/displaymanager") == -1 ||
 	SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER) != "kdm" ||
