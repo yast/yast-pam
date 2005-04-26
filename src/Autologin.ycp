@@ -47,24 +47,33 @@ global boolean modified = false;
  * Read autologin settings
  * @return used?
  */
-global define boolean Read () ``{
+global define boolean Read () {
 
     used = ProductFeatures::GetBooleanFeature ("globals", "enable_autologin");
 
-    if (SCR::Read (.target.size, "/etc/sysconfig/displaymanager") == -1 ||
-	SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER) != "kdm" ||
-	!Package::Installed ("kdebase3-kdm"))
+    if (SCR::Read (.target.size, "/etc/sysconfig/displaymanager") == -1)
     {
-	available = false;
-	user = "";
+	available	= false;
+	user		= "";
+	used		= false;
+	return false;
     }
-    else
+    string dm = (string) SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER);
+
+    if ((dm == "kdm" && Package::Installed ("kdebase3-kdm")) ||
+	 dm == "gdm" && Package::Installed ("gdm"))
     {
+	available	= true;
 	user = (string) SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER_AUTOLOGIN);
 	pw_less = (string) SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER_PASSWORD_LESS_LOGIN) == "yes";
 
 	if (user == nil || user == "")
 	    user = "";
+    }
+    else
+    {
+	available       = false;
+	user            = "";
     }
     used = (user != "");
     return used;
