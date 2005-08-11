@@ -107,12 +107,12 @@ sub read_shadow {
 		return 3;
 	    }
 	    $shadow_tmp{$uname} = {
-		"shadowlastchange"	=> $last_change || 0,
+		"shadowlastchange"	=> $last_change,
 		"shadowwarning"		=> $warn,
 		"shadowinactive"	=> $inact,
 		"shadowexpire"		=> $expire,
-		"shadowmin"		=> $min		|| 0,
-		"shadowmax"		=> $max		|| 0,
+		"shadowmin"		=> $min,
+		"shadowmax"		=> $max,
 		"shadowflag"		=> $flag,
 		"userpassword"		=> $pass	|| ""
 	    };
@@ -484,9 +484,9 @@ sub write_shadow {
 	    my $shadowline	= join (":", (
 		$uname,
 		$shadow_entry{"userpassword"},
-		$shadow_entry{"shadowlastchange"} || 0,
-		$shadow_entry{"shadowmin"} || 0,
-		$shadow_entry{"shadowmax"} || 0,
+		$shadow_entry{"shadowlastchange"},
+		$shadow_entry{"shadowmin"},
+		$shadow_entry{"shadowmax"},
 		$shadow_entry{"shadowwarning"},
 		$shadow_entry{"shadowinactive"},
 		$shadow_entry{"shadowexpire"},

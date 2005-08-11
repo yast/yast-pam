@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Aug 11 16:48:01 CEST 2005 - jsuchome@suse.cz
+
+- do not set 0 as default for empty values (#103873)  
+- 2.12.2
+
+-------------------------------------------------------------------
 Mon Apr 25 18:26:02 CEST 2005 - jsuchome@suse.cz
 
 - enable autologin for GDM (#74198)
