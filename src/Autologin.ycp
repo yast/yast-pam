@@ -96,7 +96,11 @@ global define boolean Write (boolean write_only) ``{
     SCR::Write(.sysconfig.displaymanager, nil);
 
     if (!write_only)
-	SCR::Execute (.target.bash, "/sbin/SuSEconfig --module kdm3");
+    {
+	string dm = (string)SCR::Read(.sysconfig.displaymanager.DISPLAYMANAGER);
+	string mod = (dm == "gdm") ? dm : "kdm3";
+	SCR::Execute (.target.bash, "/sbin/SuSEconfig --module " + mod);
+    }
 
     modified = false;
     return true;

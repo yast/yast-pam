@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Aug 18 12:52:00 CEST 2005 - jsuchome@suse.cz
+
+- autologin: call correct SuSEconfig module for GDM (#74198)
+- 2.12.3
+
+-------------------------------------------------------------------
 Thu Aug 11 16:48:01 CEST 2005 - jsuchome@suse.cz
 
 - do not set 0 as default for empty values (#103873)  
