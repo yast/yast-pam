@@ -643,70 +643,70 @@ while ( <STDIN> )
 	    ycp::Return ($error_info);
 	}
 	elsif    ( $path eq '.local.users' ) {
-	    ycp::Return (\%{$users{"local"}});
+	    ycp::Return (\%{$users{"local"}}, 1);
 	}
 	elsif ( $path eq '.system.users' ) {
-	    ycp::Return (\%{$users{"system"}});
+	    ycp::Return (\%{$users{"system"}}, 1);
 	}
 	elsif ( $path eq '.local.shadow' ) {
-	    ycp::Return (\%{$shadow{"local"}});
+	    ycp::Return (\%{$shadow{"local"}}, 1);
 	}
 	elsif ( $path eq '.system.shadow' ) {
-	    ycp::Return (\%{$shadow{"system"}});
+	    ycp::Return (\%{$shadow{"system"}}, 1);
 	}
 	elsif ( $path eq '.local.groups' ) {
-	    ycp::Return (\%{$groups{"local"}});
+	    ycp::Return (\%{$groups{"local"}}, 1);
 	}
 	elsif ( $path eq '.system.groups' ) {
-	    ycp::Return (\%{$groups{"system"}});
+	    ycp::Return (\%{$groups{"system"}}, 1);
 	}
 	elsif ( $path eq '.local.users.by_name' ) {
-	    ycp::Return (\%{$users_by_name{"local"}});
+	    ycp::Return (\%{$users_by_name{"local"}}, 1);
 	}
 	elsif ( $path eq '.system.users.by_name' ) {
-	    ycp::Return (\%{$users_by_name{"system"}});
+	    ycp::Return (\%{$users_by_name{"system"}}, 1);
 	}
 	elsif ( $path eq '.local.users.uids' ) {
-	    ycp::Return (\%{$uids{"local"}});
+	    ycp::Return (\%{$uids{"local"}}, 1);
 	}
 	elsif ( $path eq '.system.users.uids' ) {
-	    ycp::Return (\%{$uids{"system"}});
+	    ycp::Return (\%{$uids{"system"}}, 1);
 	}
 	elsif ( $path eq '.local.users.usernames' ) {
-	    ycp::Return (\%{$usernames{"local"}});
+	    ycp::Return (\%{$usernames{"local"}}, 1);
 	}
 	elsif ( $path eq '.system.users.usernames' ) {
-	    ycp::Return (\%{$usernames{"system"}});
+	    ycp::Return (\%{$usernames{"system"}}, 1);
 	}
 	elsif ( $path eq '.local.users.homes' ) {
-	    ycp::Return (\%{$homes{"local"}});
+	    ycp::Return (\%{$homes{"local"}}, 1);
 	}
 	elsif ( $path eq '.system.users.homes' ) {
-	    ycp::Return (\%{$homes{"system"}});
+	    ycp::Return (\%{$homes{"system"}}, 1);
 	}
 	elsif ( $path eq '.local.users.last_uid' ) {
-	    ycp::Return ($last_uid{"local"});
+	    ycp::Return ($last_uid{"local"}, 1);
 	}
 	elsif ( $path eq '.system.users.last_uid' ) {
-	    ycp::Return ($last_uid{"system"});
+	    ycp::Return ($last_uid{"system"}, 1);
 	}
 	elsif ( $path eq '.local.groups.by_name' ) {
-	    ycp::Return (\%{$groups_by_name{"local"}});
+	    ycp::Return (\%{$groups_by_name{"local"}}, 1);
 	}
 	elsif ( $path eq '.system.groups.by_name' ) {
-	    ycp::Return (\%{$groups_by_name{"system"}});
+	    ycp::Return (\%{$groups_by_name{"system"}}, 1);
 	}
 	elsif ( $path eq '.local.groups.gids' ) {
-	    ycp::Return (\%{$gids{"local"}});
+	    ycp::Return (\%{$gids{"local"}}, 1);
 	}
 	elsif ( $path eq '.system.groups.gids' ) {
-	    ycp::Return (\%{$gids{"system"}});
+	    ycp::Return (\%{$gids{"system"}}, 1);
 	}
 	elsif ( $path eq '.local.groups.groupnames' ) {
-	    ycp::Return (\%{$groupnames{"local"}});
+	    ycp::Return (\%{$groupnames{"local"}}, 1);
 	}
 	elsif ( $path eq '.system.groups.groupnames' ) {
-	    ycp::Return (\%{$groupnames{"system"}});
+	    ycp::Return (\%{$groupnames{"system"}}, 1);
 	}
 	elsif ( $path eq '.passwd.plusline' ) {
 	    y2warning ("$command $path is deprecated, use '.passwd.pluslines' instead!");
@@ -721,22 +721,22 @@ while ( <STDIN> )
 	    ycp::Return ($plus_line_group);
 	}
 	elsif ( $path eq '.passwd.pluslines' ) {
-	    ycp::Return (\@plus_lines_passwd);
+	    ycp::Return (\@plus_lines_passwd, 1);
 	}
 	elsif ( $path eq '.shadow.pluslines' ) {
-	    ycp::Return (\@plus_lines_shadow);
+	    ycp::Return (\@plus_lines_shadow, 1);
 	}
 	elsif ( $path eq '.group.pluslines' ) {
-	    ycp::Return (\@plus_lines_group);
+	    ycp::Return (\@plus_lines_group, 1);
 	}
 	elsif ( $path eq '.passwd.comments' ) {
-	    ycp::Return (\@comments_passwd);
+	    ycp::Return (\@comments_passwd, 1);
 	}
 	elsif ( $path eq '.group.comments' ) {
-	    ycp::Return (\@comments_group);
+	    ycp::Return (\@comments_group, 1);
 	}
 	elsif ( $path eq '.shadow.comments' ) {
-	    ycp::Return (\@comments_shadow);
+	    ycp::Return (\@comments_shadow, 1);
 	}
 	else {
 	    y2error ("wrong path ($path) or argument: ", ref ($argument));

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Sep 29 15:33:49 CEST 2005 - jsuchome@suse.cz
+
+- ag_passwd: return everything as strings to allow usernames (etc.)
+  starting with 0 (#118371)
+- 2.13.0
+
+-------------------------------------------------------------------
 Thu Aug 18 12:52:00 CEST 2005 - jsuchome@suse.cz
 
 - autologin: call correct SuSEconfig module for GDM (#74198)
