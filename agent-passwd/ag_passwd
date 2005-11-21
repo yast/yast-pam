@@ -214,9 +214,9 @@ sub read_group {
 	    };
 
 	    if (!defined $groups_by_gidnumber{$group_type}{$gid}) {
-		$groups_by_gidnumber{$group_type}{$gid} = ();
+		$groups_by_gidnumber{$group_type}{$gid} = {};
 	    }
-	    push @{$groups_by_gidnumber{$group_type}{$gid}}, $groupname;
+	    $groups_by_gidnumber{$group_type}{$gid}{$groupname}	= 1;
 	}
 	else # save the possible "+"/"-" entries
         {
@@ -285,7 +285,7 @@ sub read_passwd {
 	    }
 	    if ($group_type ne "")
 	    {
-		$groupname = $groups_by_gidnumber{$group_type}{$gid}[0];
+		$groupname = (keys %{$groups_by_gidnumber{$group_type}{$gid}})[0];
 		# modify default group's more_users entry
 		$groups{$group_type}{$groupname}{"more_users"}{$username}	= 1;
 	    }
@@ -375,9 +375,9 @@ sub read_passwd {
 	    }
 
 	    if (!defined $users_by_uidnumber{$user_type}{$uid}) {
-		$users_by_uidnumber{$user_type}{$uid} = ();
+		$users_by_uidnumber{$user_type}{$uid} = {};
 	    }
-	    push @{$users_by_uidnumber{$user_type}{$uid}}, $username;
+	    $users_by_uidnumber{$user_type}{$uid}{$username}	= 1;
 	}
 	else # the "+" entry in passwd
 	{
