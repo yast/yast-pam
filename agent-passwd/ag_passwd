@@ -24,10 +24,11 @@ my %homes		= ();
 my %gids		= ();
 my %groupnames		= ();
 
+# for each user there is a list of groups, where the user is contained
 my %users_groups	= ();
 
-my %users_by_name	= ();
-my %groups_by_name	= ();
+my %users_by_uidnumber	= ();
+my %groups_by_gidnumber	= ();
 
 my $plus_line_group 	= "";
 my $plus_line_passwd	= "";
@@ -174,12 +175,10 @@ sub read_group {
 	    }
 
             # check for duplicates...
-	    if (defined $gids{"local"}{$gid}  || defined $gids{"system"}{$gid})
+	    if (defined $gids{$group_type}{$gid})
 	    {
-		y2error ("duplicated gid ($gid) in /etc/group! Exiting...");
-		$errno		= 5;
-		$error_info 	= "$gid";
-		return 5;
+		y2warning ("duplicated gid ($gid) in /etc/group");
+	        $gids{$group_type}{$gid} = $gids{$group_type}{$gid} + 1;
 	    }
 	    else
             {
@@ -205,7 +204,7 @@ sub read_group {
 		$userlist{$u}			= 1;
 		$users_groups{$u}{$groupname}	= 1;
 	    }
-	    $groups{$group_type}{$gid} = {
+	    $groups{$group_type}{$groupname} = {
 		"cn"		=> $groupname,
 		"gidnumber" 	=> $gid,
 		"userlist"	=> \%userlist,
@@ -214,7 +213,10 @@ sub read_group {
 		"more_users"	=> {}
 	    };
 
-	    $groups_by_name{$group_type}{$groupname} = $gid;
+	    if (!defined $groups_by_gidnumber{$group_type}{$gid}) {
+		$groups_by_gidnumber{$group_type}{$gid} = ();
+	    }
+	    push @{$groups_by_gidnumber{$group_type}{$gid}}, $groupname;
 	}
 	else # save the possible "+"/"-" entries
         {
@@ -273,20 +275,19 @@ sub read_passwd {
 	    my $groupname	= "";
 	    my %grouplist	= ();
 
-	    if (defined $groups{"system"}{$gid})
+	    if (defined $groups_by_gidnumber{"system"}{$gid})
 	    {
 		$group_type = "system";
 	    }
-	    if (defined $groups{"local"}{$gid})
+	    if (defined $groups_by_gidnumber{"local"}{$gid})
 	    {
 		$group_type = "local";
 	    }
 	    if ($group_type ne "")
 	    {
-		$groupname = $groups{$group_type}{$gid}{"cn"};
-	    
+		$groupname = $groups_by_gidnumber{$group_type}{$gid}[0];
 		# modify default group's more_users entry
-		$groups{$group_type}{$gid}{"more_users"}{$username}	= 1;
+		$groups{$group_type}{$groupname}{"more_users"}{$username}	= 1;
 	    }
 
 	    # add the grouplist
@@ -321,12 +322,10 @@ sub read_passwd {
 	    }
 
             # check for duplicates in /etc/passwd:
-	    if (defined $uids{"local"}{$uid}  || defined $uids{"system"}{$uid})
+	    if (defined $uids{$user_type}{$uid})
 	    {
-		y2error ("duplicated UID in /etc/passwd! Exiting...");
-		$errno 		= 1;
-		$error_info 	= "$uid";
-		return 1;
+		y2warning ("duplicated UID in /etc/passwd: $uid");
+	        $uids{$user_type}{$uid} = $uids{$user_type}{$uid} + 1;
 	    }
             else
 	    {
@@ -353,7 +352,7 @@ sub read_passwd {
 	    my @grouplist	= keys (%grouplist);
 
 	    # such map we would like to export from the read script...
-	    $users{$user_type}{$uid} = {
+	    $users{$user_type}{$username} = {
 		"addit_data"	=> $additional,
 		"cn"		=> $full,
 		"homedirectory"	=> $home,
@@ -375,7 +374,10 @@ sub read_passwd {
 		$shadow{$user_type}{$username} = $shadow_tmp{$username};
 	    }
 
-	    $users_by_name{$user_type}{$username} = $uid;
+	    if (!defined $users_by_uidnumber{$user_type}{$uid}) {
+		$users_by_uidnumber{$user_type}{$uid} = ();
+	    }
+	    push @{$users_by_uidnumber{$user_type}{$uid}}, $username;
 	}
 	else # the "+" entry in passwd
 	{
@@ -412,9 +414,9 @@ sub write_passwd {
 	    next;
 	}
 
-	foreach my $uid (sort {$a <=> $b} keys %{$users_w{$type}}) {
+	foreach my $username (sort keys %{$users_w{$type}}) {
 
-	    my %user	= %{$users_w{$type}{$uid}};
+	    my %user	= %{$users_w{$type}{$username}};
 	    my $pass	= "x";
 	    my $cn	= $user{"cn"} || "";
 	    if (defined $user{"addit_data"} && $user{"addit_data"} ne "") {
@@ -423,7 +425,7 @@ sub write_passwd {
 	    my $userline	= join (":", (
 		$user{"uid"} || "",
 		$pass,
-		$uid,
+		$user{"uidnumber"} || 0,
 		$user{"gidnumber"} || 0,
 		$cn,
 		$user{"homedirectory"} || "",
@@ -538,9 +540,9 @@ sub write_group {
 	}
 
 	# sort order: id
-        foreach my $gid (sort {$a <=> $b} keys %{$groups_w{$type}}) {
+        foreach my $groupname (sort keys %{$groups_w{$type}}) {
 
-	    my %group	= %{$groups_w{$type}{$gid}};
+	    my %group	= %{$groups_w{$type}{$groupname}};
 	    my $pass	= "x";
 	    if (defined $group{"userpassword"}) {
 		$pass 	= $group{"userpassword"};
@@ -548,7 +550,7 @@ sub write_group {
 	    my @group_entry	= (
 		$group{"cn"},
 		$pass,
-		$gid,
+		$group{"gidnumber"} || 0,
 		join (",", sort keys %{$group{"userlist"}})
 	    );
 	    my $groupline	= join (":", @group_entry);
@@ -568,9 +570,6 @@ sub write_group {
 	    print GROUP "$plusline\n";
 	}
     }
-#    if ($plus_line_group ne "") {
-#	print GROUP "$plus_line_group\n";
-#    }
     close GROUP;
 }
 
@@ -661,10 +660,18 @@ while ( <STDIN> )
 	    ycp::Return (\%{$groups{"system"}}, 1);
 	}
 	elsif ( $path eq '.local.users.by_name' ) {
-	    ycp::Return (\%{$users_by_name{"local"}}, 1);
+	    y2warning ("$command $path is deprecated");
+	    ycp::Return ({});
 	}
 	elsif ( $path eq '.system.users.by_name' ) {
-	    ycp::Return (\%{$users_by_name{"system"}}, 1);
+	    y2warning ("$command $path is deprecated");
+	    ycp::Return ({});
+	}
+	elsif ( $path eq '.local.users.by_uidnumber' ) {
+	    ycp::Return (\%{$users_by_uidnumber{"local"}}, 1);
+	}
+	elsif ( $path eq '.system.users.by_uidnumber' ) {
+	    ycp::Return (\%{$users_by_uidnumber{"system"}}, 1);
 	}
 	elsif ( $path eq '.local.users.uids' ) {
 	    ycp::Return (\%{$uids{"local"}}, 1);
@@ -691,10 +698,18 @@ while ( <STDIN> )
 	    ycp::Return ($last_uid{"system"}, 1);
 	}
 	elsif ( $path eq '.local.groups.by_name' ) {
-	    ycp::Return (\%{$groups_by_name{"local"}}, 1);
+	    y2warning ("$command $path is deprecated");
+	    ycp::Return ({});
 	}
 	elsif ( $path eq '.system.groups.by_name' ) {
-	    ycp::Return (\%{$groups_by_name{"system"}}, 1);
+	    y2warning ("$command $path is deprecated");
+	    ycp::Return ({});
+	}
+	elsif ( $path eq '.local.groups.by_gidnumber' ) {
+	    ycp::Return (\%{$groups_by_gidnumber{"local"}}, 1);
+	}
+	elsif ( $path eq '.system.groups.by_gidnumber' ) {
+	    ycp::Return (\%{$groups_by_gidnumber{"system"}}, 1);
 	}
 	elsif ( $path eq '.local.groups.gids' ) {
 	    ycp::Return (\%{$gids{"local"}}, 1);
