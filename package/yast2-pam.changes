@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Nov 16 17:35:41 CET 2005 - jsuchome@suse.cz
+
+- adapted passwd-agent to index maps of users and groups by names,
+  not by id's (thus allowing duplicated id's)
+- 2.13.1 
+
+-------------------------------------------------------------------
 Thu Sep 29 15:33:49 CEST 2005 - jsuchome@suse.cz
 
 - ag_passwd: return everything as strings to allow usernames (etc.)
