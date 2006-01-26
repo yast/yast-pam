@@ -1,7 +1,7 @@
 @HEADER-COMMENT@
-# neededforbuild yast2-devel-packages yast2
 
 @HEADER@
+BuildRequires:	yast2-devel-packages
 Requires:	yast2-core yast2-packager yast2
 
 Provides:	yast2-agent-pam
