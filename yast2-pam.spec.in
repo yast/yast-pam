@@ -1,8 +1,8 @@
 @HEADER-COMMENT@
 
 @HEADER@
-BuildRequires:	yast2-devel-packages
-Requires:	yast2-core yast2-packager yast2
+BuildRequires:	yast2-devtools doxygen yast2-core-devel perl-XML-Writer yast2 yast2-testsuite
+Requires:	yast2
 
 Provides:	yast2-agent-pam
 Obsoletes:	yast2-agent-pam
