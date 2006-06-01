@@ -3,6 +3,7 @@
  * Module:	yast2-pam
  * Summary:	Configuration of /etc/nsswitch.conf
  * Authors:	Jiri Suchomel <jsuchome@suse.cz>
+ * Flags:	Stable
  *
  * $Id$
  */

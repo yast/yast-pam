@@ -4,6 +4,7 @@
  * Summary:	YaST intrerface for security agent (/etc/security/*.conf)
  *		and /etc/default/passwd agent
  * Authors:	Jiri Suchomel <jsuchome@suse.cz>
+ * Flags:	Stable
  *
  * $Id$
  *

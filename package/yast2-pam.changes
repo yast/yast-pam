@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun  1 15:05:11 CEST 2006 - jsuchome@suse.cz
+
+- API of Autologin, Nsswitch and PamSettings marked as stable
+- 2.13.3
+
+-------------------------------------------------------------------
 Tue Feb 14 15:29:00 CET 2006 - jsuchome@suse.cz
 
 - reduced BuildRequires and Requires (yast2-packager not needed)

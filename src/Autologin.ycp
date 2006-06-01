@@ -3,6 +3,7 @@
  * Package:	yast2
  * Summary:	Autologin read/write routines
  * Author:	Jiri Suchomel <jsuchome@suse.cz>
+ * Flags:	Stable
  *
  * $Id$
  */
