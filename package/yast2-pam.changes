@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 25 17:10:07 CEST 2006 - jsuchome@suse.cz
+
+- added support for empty passwords (#144724)
+- 2.13.4 
+
+-------------------------------------------------------------------
 Thu Jun  1 15:05:11 CEST 2006 - jsuchome@suse.cz
 
 - API of Autologin, Nsswitch and PamSettings marked as stable
