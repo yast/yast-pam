@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 26 14:32:00 CEST 2006 - jsuchome@suse.cz
+
+- added Pam.ycp module to handle /etc/pam.d/* files (#190330)
+- 2.13.5 
+
+-------------------------------------------------------------------
 Tue Jul 25 17:10:07 CEST 2006 - jsuchome@suse.cz
 
 - added support for empty passwords (#144724)

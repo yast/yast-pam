@@ -1,0 +1,135 @@
+/**
+ * File:	modules/Pam.ycp
+ * Package:	yast2-pam
+ * Summary:	YaST intrerface for /etc/pam.d/* files
+ * Authors:	Jiri Suchomel <jsuchome@suse.cz>
+ * Flags:	Unstable
+ *
+ * $Id$
+ *
+ */
+
+{
+
+module "Pam";
+
+import "FileUtils";
+
+/**
+ * if pam_mkhomedir is set in /etc/pam.d/commond-session
+ */
+boolean mkhomedir	= false;
+
+// if it mkhomedir was modified
+boolean mkhomedir_modified	= false;
+
+/**
+ * Read the state of mkhomedir in /etc/pam.d/common-session (bug #143519)
+ */
+global define boolean ReadMkHomeDir () {
+
+    boolean ret		= false;
+    string file_path	= "/etc/pam.d/common-session";
+
+    if (!FileUtils::Exists (file_path))
+	return false;
+
+    string file = (string) SCR::Read (.target.string, file_path);
+    foreach (string line, splitstring (file, "\n"), {
+	if (regexpmatch (line, "[\t ]*#"))
+	    return;
+	if (issubstring (line,"pam_mkhomedir.so"))
+	    ret = true;
+    });
+    return ret;
+}
+
+
+/**
+ * Write the new value of pam_mkhomedir to /etc/pam.d/common-session
+ * @param boolean new status
+ */
+global define boolean WriteMkHomeDir (boolean enabled) {
+
+    string the_line	= "session optional\tpam_mkhomedir.so";
+    string file_path	= "/etc/pam.d/common-session";
+    if (!FileUtils::Exists (file_path))
+    {
+	SCR::Write (.target.string, file_path, the_line);
+	return true;
+    }
+    string cont = (string) SCR::Read(.target.string, file_path);
+    list<string> new_cont	= [];
+    boolean done		= false;
+    foreach (string line, splitstring (cont, "\n"), {
+	if (regexpmatch (line, "[\t ]*#"))
+	{
+	    new_cont	= add (new_cont, line);
+	    return;
+	}
+	else if (!done && enabled)
+	{
+	    new_cont	= add (new_cont, the_line);
+	    done	= true;
+	}
+	if (enabled || !issubstring (line,"pam_mkhomedir.so"))
+	    new_cont	= add (new_cont, line);
+    });
+    SCR::Execute (.target.bash, sformat ("/bin/cp %1 %1.YaST2save", file_path));
+    return SCR::Write (.target.string, file_path, mergestring (new_cont, "\n"));
+}
+
+/**
+ * Set the new value of mkhomedir
+ */
+global define boolean SetMkHomeDir (boolean new_value) {
+
+    if (mkhomedir != new_value)
+    {
+	mkhomedir_modified	= true;
+        mkhomedir = new_value;
+    }
+    return mkhomedir;
+
+}
+
+/**
+ * Was anything handled by this module modified by user?
+ */
+global boolean Modified () {
+
+    return mkhomedir_modified;
+}
+
+/**
+ * return the value of mkhomedir
+ */
+global boolean MkHomeDir () {
+    return mkhomedir;
+}
+
+/**
+ * Reads all envolved files and stores their status
+ * @return true on success
+ */
+global boolean Read () {
+
+    mkhomedir	= ReadMkHomeDir ();
+    return true;
+}
+
+/**
+ * Writes all edited files to the disk
+ * @param force - write everything, even if modification was not detected
+ * @return true on success
+ */
+global boolean Write (boolean force) {
+
+    boolean ret = true;
+    if (mkhomedir_modified || force)
+	ret	= WriteMkHomeDir (mkhomedir);
+    return ret;
+}
+
+
+}//EOF
