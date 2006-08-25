@@ -1,10 +1,9 @@
 /**
  * File:	modules/PamSettings.ycp
  * Package:	yast2-pam
- * Summary:	YaST intrerface for security agent (/etc/security/*.conf)
- *		and /etc/default/passwd agent
+ * Summary:	YaST intrerface for /etc/default/passwd agent
  * Authors:	Jiri Suchomel <jsuchome@suse.cz>
- * Flags:	Stable
+ * Flags:	Unstable
  *
  * $Id$
  *
@@ -14,15 +13,12 @@
 
 module "PamSettings";
 
+import "Pam";
+
 /**
  * Was /etc/default/passwd modified?
  */
 boolean default_passwd_modified	= false;
-
-/**
- * Was anything under /etc/security/ modified?
- */
-boolean security_modified	= false;
 
 list<string> security_files = [];
 
@@ -34,6 +30,7 @@ list<string> security_files = [];
  */
 global define list<string> GetFiles () ``{
 
+    y2warning ("this function is obsolete, use Pam module instead");
     if (security_files == [])
 	security_files = (list<string>) SCR::Dir (.etc.security.section);
     if (security_files == nil)
@@ -48,12 +45,8 @@ global define list<string> GetFiles () ``{
  */
 define string Filename (string name) ``{
 
-    string ret = name;
-    foreach (string file, GetFiles (), ``{
-	if (issubstring (file, name))
-	    ret = file;
-    });
-    return ret;
+    y2warning ("this function is obsolete, use Pam module instead");
+    return "";
 }
 
 /**
@@ -67,10 +60,14 @@ define string Filename (string name) ``{
  */
 global define list<string> GetValues (string file, string type) ``{
 
-    string filename = Filename (file);
-    string ret = (string) SCR::Read (add (add (.etc.security.v, filename), type));
-    if(ret == nil) return [];
-    return splitstring (ret, " \t");
+    y2warning ("this function is obsolete, use Pam module instead");
+    // FIXME temporary hack for backward compatibility
+    if (file == "pam_pwcheck" && type == "password")
+    {
+	map pwcheck = Pam::Query ("pwcheck");
+	return pwcheck["password"]:[];
+    }
+    return [];
 }
 
 /**
@@ -82,28 +79,10 @@ global define list<string> GetValues (string file, string type) ``{
  */
 global define map GetFile (string file) ``{
 
-    map ret = $[];
-    string filename = Filename (file);
-    foreach (string type, SCR::Dir (add (.etc.security.v, filename)), ``{
-	ret [type] = GetValues (filename, type);
-    });
-    return ret;
+    y2warning ("this function is obsolete, use Pam module instead");
+    return $[];
 }
 
-/**
- * Saves the new list of options of one type to given file
- * @param file file name
- * @param type type of management group
- * @return success
- * @example
- * SetValues ("pwcheck", "password", [ "cracklib", "md5" ])
- */
-global define boolean SetValues (string file, string type, list<string> values) ``{
-    string filename	= Filename (file);
-    security_modified	= true;
-    return SCR::Write (add (add (.etc.security.v, filename), type),
-	mergestring ((list<string>)values, " ")) == true;
-}
 
 /**
  * Adds a new options to the current list of options
@@ -114,9 +93,32 @@ global define boolean SetValues (string file, string type, list<string> values) 
  * AddValue ("pwcheck", "password", "md5" ])
  */
 global define boolean AddValue (string file, string type, string value) ``{
-    list<string> values = GetValues (file, type);
-    // value must be first (to avoid adding to the commented rest of line)
-    return SetValues (file, type, (list<string>) union ([value], values));
+    y2warning ("this function is obsolete, use Pam module instead");
+    if (file == "pam_pwcheck")
+    {
+	if (value == "no_obscure_checks")
+	    return Pam::Add ("pwcheck-no_obscure_checks");
+	if (value == "cracklib")
+	    return Pam::Add ("pwcheck-cracklib");
+	list split = splitstring (value, "=");
+	string pth = split[1]:"";
+	if (issubstring (value, "cracklib="))
+	    return Pam::Add ("pwcheck-cracklib-path=" + pth);
+	if (issubstring (value, "minlen="))
+	    return Pam::Add ("pwcheck-minlen=" + pth);
+	if (issubstring (value, "remember="))
+	    return Pam::Add ("pwcheck-remember=" + pth);
+    }
+    else if (file == "unix2" || file == "pam_unix2")
+    {
+	if (value == "use_ldap")
+	    return Pam::Add ("ldap");
+	if (value == "use_krb5")
+	    return Pam::Add ("krb5");
+	if (value == "winbind")
+	    return Pam::Add ("winbind");
+    }
+    return false;
 }
 
 /**
@@ -128,14 +130,41 @@ global define boolean AddValue (string file, string type, string value) ``{
  * RemoveValue ("pwcheck", "password", "md5" ])
  */
 global define boolean RemoveValue (string file, string type, string value) ``{
-    list<string> values = GetValues (file, type);
-    return SetValues (file, type, filter (string v, values, ``{
-	// this is for options like "minlen=5" etc.
-	if (!issubstring (v, "="))
-	    return v != value;
-	else
-	    return !issubstring (v,value);
-    }));
+    y2warning ("this function is obsolete, use Pam module instead");
+    if (file == "pam_pwcheck")
+    {
+	if (value == "no_obscure_checks")
+	    return Pam::Remove ("pwcheck-no_obscure_checks");
+	if (issubstring (value, "cracklib"))
+	    return Pam::Remove ("pwcheck-cracklib");
+	if (issubstring (value, "minlen="))
+	    return Pam::Remove ("pwcheck-minlen=");
+	if (issubstring (value, "remember="))
+	    return Pam::Remove ("pwcheck-remember=");
+    }
+    else if (file == "unix2" || file == "pam_unix2")
+    {
+	if (value == "use_ldap")
+	    return Pam::Remove ("ldap");
+	if (value == "use_krb5")
+	    return Pam::Remove ("krb5");
+	if (value == "winbind")
+	    return Pam::Remove ("winbind");
+    }
+    return false;
+}
+
+/**
+ * Saves the new list of options of one type to given file
+ * @param file file name
+ * @param type type of management group
+ * @return success
+ * @example
+ * SetValues ("pwcheck", "password", [ "cracklib", "md5" ])
+ */
+global define boolean SetValues (string file, string type, list<string> values) ``{
+    y2warning ("this function is obsolete, use Pam module instead");
+    return false;
 }
 
 //---------------------------- functions for handling /etc/default/passwd
@@ -215,8 +244,6 @@ global define boolean SetDefaultValue (string key, string value) {
 global define boolean Write (boolean force) {
 
     boolean ret = true;
-    if (security_modified || force)
-	ret	= ret && SCR::Write (.etc.security, nil);
     if (default_passwd_modified || force)
 	ret	= ret && SCR::Write (.etc.default.passwd, nil);
     return ret;

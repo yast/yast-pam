@@ -7,6 +7,7 @@
  */
 
 {
+    // FIXME no sense, make testsuite for default files...
 
     include "testsuite.ycp";
     import "PamSettings";
@@ -33,6 +34,7 @@
 	]
     ];
 
+    /*
     DUMP ("==== PamSettings::GetFiles: =============================");
 
     TEST(``(PamSettings::GetFiles ()), [ READ, [], [] ], 0);
@@ -42,5 +44,6 @@
     TEST(``(PamSettings::GetValues ("unix2", "passwd")), [ READ, [], [] ], 0);
 
     TEST(``(PamSettings::GetValues ("unix2", "auth")), [ READ, [], [] ], 0);
+    */
 
 }
