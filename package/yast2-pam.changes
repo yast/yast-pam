@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Aug 24 14:52:31 CEST 2006 - jsuchome@suse.cz
+
+- adapted for pam-config usage (F300956)
+- API of PamSettings module is obsolete
+- 2.14.0 
+
+-------------------------------------------------------------------
 Wed Jul 26 14:32:00 CEST 2006 - jsuchome@suse.cz
 
 - added Pam.ycp module to handle /etc/pam.d/* files (#190330)

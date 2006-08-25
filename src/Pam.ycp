@@ -13,123 +13,79 @@
 
 module "Pam";
 
-import "FileUtils";
-
 /**
- * if pam_mkhomedir is set in /etc/pam.d/commond-session
+ * Query PAM configuration for status of given module
+ * @param string PAM module (e.g. ldap, pwcheck)
+ * @return map <string,list> keys are 'management groups' (e.g. auth), values
+ * are lists of options
  */
-boolean mkhomedir	= false;
+global map Query (string mod) {
 
-// if it mkhomedir was modified
-boolean mkhomedir_modified	= false;
-
-/**
- * Read the state of mkhomedir in /etc/pam.d/common-session (bug #143519)
- */
-global define boolean ReadMkHomeDir () {
-
-    boolean ret		= false;
-    string file_path	= "/etc/pam.d/common-session";
-
-    if (!FileUtils::Exists (file_path))
-	return false;
-
-    string file = (string) SCR::Read (.target.string, file_path);
-    foreach (string line, splitstring (file, "\n"), {
-	if (regexpmatch (line, "[\t ]*#"))
-	    return;
-	if (issubstring (line,"pam_mkhomedir.so"))
-	    ret = true;
+    map ret = $[];
+    map out = (map)SCR::Execute (.target.bash_output, "pam-config -q --" + mod);
+    if (out["exit"]:0 != 0)
+    {
+	y2warning ("pam-config for %1 returned %2", mod, out);
+	return ret;
+    }
+    foreach (string line, splitstring (out["stdout"]:"", "\n"), {
+	list l = splitstring (line, ":");
+	if (line == "" || size (l) < 2) return;
+	string key	= l[0]:"";
+	ret[key]	=
+	     filter (string o, splitstring (l[1]:"", " \t"), ``(o != ""));
     });
     return ret;
 }
 
+/**
+ * Ask if given PAM module is enabled
+ */
+global boolean Enabled (string mod) {
+
+    return size (Query(mod)) > 0;
+}
 
 /**
- * Write the new value of pam_mkhomedir to /etc/pam.d/common-session
- * @param boolean new status
+ * Add options or new PAM module
+ * @param string PAM module or option
+ * @return success
  */
-global define boolean WriteMkHomeDir (boolean enabled) {
+global boolean Add (string mod) {
 
-    string the_line	= "session optional\tpam_mkhomedir.so";
-    string file_path	= "/etc/pam.d/common-session";
-    if (!FileUtils::Exists (file_path))
+    map out = (map)SCR::Execute (.target.bash_output, "pam-config -a --" + mod);
+    if (out["exit"]:0 != 0)
     {
-	SCR::Write (.target.string, file_path, the_line);
-	return true;
+	y2warning ("pam-config for %1 returned %2", mod, out);
+	return false;
     }
-    string cont = (string) SCR::Read(.target.string, file_path);
-    list<string> new_cont	= [];
-    boolean done		= false;
-    foreach (string line, splitstring (cont, "\n"), {
-	if (regexpmatch (line, "[\t ]*#"))
-	{
-	    new_cont	= add (new_cont, line);
-	    return;
-	}
-	else if (!done && enabled)
-	{
-	    new_cont	= add (new_cont, the_line);
-	    done	= true;
-	}
-	if (enabled || !issubstring (line,"pam_mkhomedir.so"))
-	    new_cont	= add (new_cont, line);
-    });
-    SCR::Execute (.target.bash, sformat ("/bin/cp %1 %1.YaST2save", file_path));
-    return SCR::Write (.target.string, file_path, mergestring (new_cont, "\n"));
-}
-
-/**
- * Set the new value of mkhomedir
- */
-global define boolean SetMkHomeDir (boolean new_value) {
-
-    if (mkhomedir != new_value)
-    {
-	mkhomedir_modified	= true;
-        mkhomedir = new_value;
-    }
-    return mkhomedir;
-
-}
-
-/**
- * Was anything handled by this module modified by user?
- */
-global boolean Modified () {
-
-    return mkhomedir_modified;
-}
-
-/**
- * return the value of mkhomedir
- */
-global boolean MkHomeDir () {
-    return mkhomedir;
-}
-
-/**
- * Reads all envolved files and stores their status
- * @return true on success
- */
-global boolean Read () {
-
-    mkhomedir	= ReadMkHomeDir ();
     return true;
 }
 
 /**
- * Writes all edited files to the disk
- * @param force - write everything, even if modification was not detected
- * @return true on success
+ * Remove options or PAM module
+ * @param string PAM module or option
+ * @return success
  */
-global boolean Write (boolean force) {
+global boolean Remove (string mod) {
 
-    boolean ret = true;
-    if (mkhomedir_modified || force)
-	ret	= WriteMkHomeDir (mkhomedir);
-    return ret;
+    map out = (map)SCR::Execute (.target.bash_output, "pam-config -d --" + mod);
+    if (out["exit"]:0 != 0)
+    {
+	y2warning ("pam-config for %1 returned %2", mod, out);
+	return false;
+    }
+    return true;
 }
 
+/**
+ * Add/Remove option or PAM module
+ * @param string PAM module or option
+ * @param boolean true for adding, false for removing
+ * @return success
+ */
+global boolean Set (string mod, boolean set) {
+    return set ? Add (mod) : Remove (mod);
+}
 
 }//EOF

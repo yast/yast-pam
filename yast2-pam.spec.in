@@ -4,6 +4,8 @@
 BuildRequires:	yast2-devtools doxygen yast2-core-devel perl-XML-Writer yast2 yast2-testsuite
 Requires:	yast2
 
+Requires:	pam-config >= 0.8
+
 Provides:	yast2-agent-pam
 Obsoletes:	yast2-agent-pam
 Provides:	yast2-agent-pam-devel
