@@ -173,7 +173,10 @@ global define boolean SetValues (string file, string type, list<string> values) 
  * Reads the value of default crypt hash (defined in /etc/default/passwd)
  */
 global define string GetHashMethod () {
-    return (string) SCR::Read (.etc.default.passwd.crypt);
+    string m = (string) SCR::Read (.etc.default.passwd.crypt);
+    if (m == nil || m == "")
+	m	= "md5";
+    return m;
 }
 
 /**
