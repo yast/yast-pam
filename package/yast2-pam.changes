@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Apr 28 11:29:02 CEST 2008 - jsuchome@suse.cz
+
+- Autologin: kdm3/kdm4 values as DISPLAYMANAGER, no SuSEconfig.kdm
+- 2.16.2
+
+-------------------------------------------------------------------
 Thu Mar 27 15:31:47 CET 2008 - jsuchome@suse.cz
 
 - kdm could be in kde4-kdm package
