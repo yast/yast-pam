@@ -61,8 +61,11 @@ global define boolean Read () {
     }
     string dm = (string) SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER);
 
-    if ((dm == "kdm" && Package::InstalledAny (["kdebase3-kdm", "kde4-kdm"])) ||
-	 dm == "gdm" && Package::Installed ("gdm"))
+    if ((issubstring (dm, "kdm") &&
+	 Package::InstalledAny (["kdebase3-kdm", "kde4-kdm"]))
+	||
+	(dm == "gdm" && Package::Installed ("gdm"))
+    )
     {
 	available	= true;
 	user = (string) SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER_AUTOLOGIN);
@@ -99,8 +102,8 @@ global define boolean Write (boolean write_only) ``{
     if (!write_only)
     {
 	string dm = (string)SCR::Read(.sysconfig.displaymanager.DISPLAYMANAGER);
-	string mod = (dm == "gdm") ? dm : "kdm3";
-	SCR::Execute (.target.bash, "/sbin/SuSEconfig --module " + mod);
+	if (dm == "gdm")
+	    SCR::Execute (.target.bash, "/sbin/SuSEconfig --module gdm");
     }
 
     modified = false;
