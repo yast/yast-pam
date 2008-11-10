@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Nov 10 15:36:04 CET 2008 - jsuchome@suse.cz
+
+- new version for new release
+- 2.17.0 
+
+-------------------------------------------------------------------
 Mon Apr 28 11:29:02 CEST 2008 - jsuchome@suse.cz
 
 - Autologin: kdm3/kdm4 values as DISPLAYMANAGER, no SuSEconfig.kdm
