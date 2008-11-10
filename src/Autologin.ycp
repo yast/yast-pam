@@ -89,10 +89,12 @@ global define boolean Read () {
  * @param write_only when true, suseconfig script will not be run
  * @return written anything?
  */
-global define boolean Write (boolean write_only) ``{
+global define boolean Write (boolean write_only) {
 
     if (!available || !modified)
 	return false;
+
+    y2milestone ("writing user %1 for autologin; pw_less is", user, pw_less);
 
     SCR::Write (.sysconfig.displaymanager.DISPLAYMANAGER_AUTOLOGIN, user);
     SCR::Write (.sysconfig.displaymanager.DISPLAYMANAGER_PASSWORD_LESS_LOGIN,
