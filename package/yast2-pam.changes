@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun  2 22:31:29 CEST 2009 - jsuchome@suse.cz
+
+- removed obsolete functions from PamSettings
+- 2.18.0
+
+-------------------------------------------------------------------
 Mon Nov 10 17:11:58 CET 2008 - visnov@suse.cz
 
 - make it build
