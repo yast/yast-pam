@@ -34,16 +34,4 @@
 	]
     ];
 
-    /*
-    DUMP ("==== PamSettings::GetFiles: =============================");
-
-    TEST(``(PamSettings::GetFiles ()), [ READ, [], [] ], 0);
-
-    DUMP ("==== PamSettings::GetValues (\"unix2\", \"passwd\") =====");
-
-    TEST(``(PamSettings::GetValues ("unix2", "passwd")), [ READ, [], [] ], 0);
-
-    TEST(``(PamSettings::GetValues ("unix2", "auth")), [ READ, [], [] ], 0);
-    */
-
 }

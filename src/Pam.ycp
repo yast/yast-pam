@@ -15,7 +15,7 @@ module "Pam";
 
 /**
  * Query PAM configuration for status of given module
- * @param string PAM module (e.g. ldap, pwcheck)
+ * @param string PAM module (e.g. ldap, cracklib)
  * @return map <string,list> keys are 'management groups' (e.g. auth), values
  * are lists of options
  */
