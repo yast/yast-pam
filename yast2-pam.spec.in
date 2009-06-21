@@ -16,7 +16,7 @@ BuildArchitectures:     noarch
 Summary:	YaST2 - PAM Agent
 
 %description
--
+This agent is used by YaST2 to modify the PAM configuration files
 
 @PREP@
 
