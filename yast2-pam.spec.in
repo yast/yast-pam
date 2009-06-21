@@ -13,7 +13,7 @@ Obsoletes:	yast2-agent-pam-devel
 
 BuildArchitectures:     noarch
 
-Summary:	pam libraries for YaST
+Summary:	YaST2 - PAM Agent
 
 %description
 -
