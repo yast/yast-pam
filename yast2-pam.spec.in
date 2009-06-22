@@ -1,6 +1,7 @@
 @HEADER-COMMENT@
 
 @HEADER@
+License: GPL v2 or later
 BuildRequires:	yast2-devtools doxygen yast2-core-devel perl-XML-Writer yast2 yast2-testsuite
 Requires:	yast2
 
