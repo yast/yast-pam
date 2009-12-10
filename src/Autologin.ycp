@@ -62,7 +62,7 @@ global define boolean Read () {
     string dm = (string) SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER);
 
     if ((issubstring (dm, "kdm") &&
-	 Package::InstalledAny (["kdebase3-kdm", "kde4-kdm"]))
+	 Package::InstalledAny (["kdebase3-kdm", "kde4-kdm", "kdm"]))
 	||
 	(dm == "gdm" && Package::Installed ("gdm"))
     )
