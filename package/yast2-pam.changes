@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Dec 10 14:00:20 CET 2009 - jsuchome@suse.cz
+
+- kde4-kdm is now kdm (bnc#561900)
+- 2.19.0 
+
+-------------------------------------------------------------------
 Tue Jun  2 22:31:29 CEST 2009 - jsuchome@suse.cz
 
 - removed obsolete functions from PamSettings
