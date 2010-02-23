@@ -65,6 +65,8 @@ global define boolean Read () {
 	 Package::InstalledAny (["kdebase3-kdm", "kde4-kdm", "kdm"]))
 	||
 	(dm == "gdm" && Package::Installed ("gdm"))
+	||
+	(dm == "lxdm" && Package::Installed ("lxdm"))
     )
     {
 	available	= true;
