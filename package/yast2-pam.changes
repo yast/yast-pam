@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar 18 09:08:28 CET 2010 - jsuchome@suse.cz
+
+- lxdm can also suport autologin (bnc#581477)
+- 2.18.1 
+
+-------------------------------------------------------------------
 Tue Jun  2 22:31:29 CEST 2009 - jsuchome@suse.cz
 
 - removed obsolete functions from PamSettings
