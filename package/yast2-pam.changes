@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jul 15 13:30:24 CEST 2010 - jsuchome@suse.cz
+
+- use full path for pam-config
+- 2.19.2 
+
+-------------------------------------------------------------------
 Tue Feb 23 10:56:16 CET 2010 - jsuchome@suse.cz
 
 - lxdm can also suport autologin (bnc#581477)

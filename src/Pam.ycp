@@ -22,7 +22,7 @@ module "Pam";
 global map Query (string mod) {
 
     map ret = $[];
-    map out = (map)SCR::Execute (.target.bash_output, "pam-config -q --" + mod);
+    map out = (map)SCR::Execute (.target.bash_output, "/usr/sbin/pam-config -q --" + mod);
     if (out["exit"]:0 != 0)
     {
 	y2warning ("pam-config for %1 returned %2", mod, out);
@@ -53,7 +53,7 @@ global boolean Enabled (string mod) {
  */
 global boolean Add (string mod) {
 
-    map out = (map)SCR::Execute (.target.bash_output, "pam-config -a --" + mod);
+    map out = (map)SCR::Execute (.target.bash_output, "/usr/sbin/pam-config -a --" + mod);
     if (out["exit"]:0 != 0)
     {
 	y2warning ("pam-config for %1 returned %2", mod, out);
@@ -69,7 +69,7 @@ global boolean Add (string mod) {
  */
 global boolean Remove (string mod) {
 
-    map out = (map)SCR::Execute (.target.bash_output, "pam-config -d --" + mod);
+    map out = (map)SCR::Execute (.target.bash_output, "/usr/sbin/pam-config -d --" + mod);
     if (out["exit"]:0 != 0)
     {
 	y2warning ("pam-config for %1 returned %2", mod, out);
