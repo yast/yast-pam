@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jan 21 12:21:29 CET 2011 - jsuchome@suse.cz
+
+- agents for accessing krb5.conf and sssd.conf moved here,
+  so they are available in more modules
+- 2.20.0 
+
+-------------------------------------------------------------------
 Thu Jul 15 13:30:24 CEST 2010 - jsuchome@suse.cz
 
 - use full path for pam-config
