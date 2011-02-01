@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb  1 10:20:08 CET 2011 - jsuchome@suse.cz
+
+- correctly package etc_sssd_conf.scr (bnc#666184)
+- 2.20.1 
+
+-------------------------------------------------------------------
 Fri Jan 21 12:21:29 CET 2011 - jsuchome@suse.cz
 
 - agents for accessing krb5.conf and sssd.conf moved here,
