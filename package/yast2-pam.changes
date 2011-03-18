@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Mar 18 09:31:58 CET 2011 - jsuchome@suse.cz
+
+- agents for accessing krb5.conf and sssd.conf moved here,
+  so they are available in more modules
+- 2.17.3 
+
+-------------------------------------------------------------------
 Thu Dec 10 14:01:00 CET 2009 - jsuchome@suse.cz
 
 - kde4-kdm is now kdm (bnc#561900) 

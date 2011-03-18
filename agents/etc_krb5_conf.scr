@@ -1,0 +1,37 @@
+/**
+ * File:
+ *   etc_krb5_conf.scr
+ * Summary:
+ *   SCR Agent for reading/writing /etc/krb5.conf using the ini-agent
+ *
+ * $Id: etc_krb5_conf.scr 63250 2011-01-21 12:02:34Z jsuchome $
+ *
+ * Read/Sets the values defined in <tt>/etc/krb5.conf</tt>.
+ * Warning! The file has 2 type of sections!
+ */
+.etc.krb5_conf
+
+`ag_ini(
+  `IniAgent(
+   "/etc/krb5.conf",
+    $[
+      "options" : [ "global_values", "repeat_names" ],
+      "comments": [ "^[ \t]*#.*", "#.*", "^[ \t]*$" ],
+      "sections" : [
+        $[
+        "begin" : [ "^[ \t]*\\[[ \t]*(.*[^ \t])[ \t]*\\][ \t]*", "[%s]" ],
+        ],
+        $[
+        "begin" : [ "^[ \t]*(.*[^ \t])[ \t]*=[ \t]*\\{[ \t]*", "%s = {" ],
+        "end" : [ "^[ \t]*[ \t]*\\}[ \t]*", "}" ]
+        ]
+      ],
+      "subindent": "\t",
+      "params" : [
+        $[
+        "match" : [ "^[ \t]*([^=]*[^ \t=])[ \t]*=[ \t]*(.*[^ \t]|)[ \t]*$" , "%s = %s"],
+      ],
+    ],
+    ]
+  )
+)
