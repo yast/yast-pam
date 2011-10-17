@@ -15,7 +15,6 @@ textdomain "pam";
 
 import "Package";
 import "Popup";
-import "ProductFeatures";
 
 /**
  * User to log in automaticaly
@@ -50,8 +49,6 @@ global boolean modified = false;
  */
 global define boolean Read () {
 
-    used = ProductFeatures::GetBooleanFeature ("globals", "enable_autologin");
-
     if (SCR::Read (.target.size, "/etc/sysconfig/displaymanager") == -1)
     {
 	available	= false;
@@ -59,28 +56,14 @@ global define boolean Read () {
 	used		= false;
 	return false;
     }
-    string dm = (string) SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER);
 
-    if ((issubstring (dm, "kdm") &&
-	 Package::InstalledAny (["kdebase3-kdm", "kde4-kdm", "kdm"]))
-	||
-	(dm == "gdm" && Package::Installed ("gdm"))
-	||
-	(dm == "lxdm" && Package::Installed ("lxdm"))
-    )
-    {
-	available	= true;
-	user = (string) SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER_AUTOLOGIN);
-	pw_less = (string) SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER_PASSWORD_LESS_LOGIN) == "yes";
+    available	= true;
+    user = (string) SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER_AUTOLOGIN);
+    pw_less = (string) SCR::Read (.sysconfig.displaymanager.DISPLAYMANAGER_PASSWORD_LESS_LOGIN) == "yes";
 
-	if (user == nil || user == "")
-	    user = "";
-    }
-    else
-    {
-	available       = false;
-	user            = "";
-    }
+    if (user == nil || user == "")
+	user = "";
+
     used = (user != "");
     return used;
 }
