@@ -1,8 +1,8 @@
 @HEADER-COMMENT@
 
 @HEADER@
-Group:	System/YaST
-License: GPL-2.0+
+Group:          System/YaST
+License:        GPL-2.0
 BuildRequires:	yast2-devtools doxygen yast2-core-devel perl-XML-Writer yast2 yast2-testsuite
 Requires:	yast2
 
