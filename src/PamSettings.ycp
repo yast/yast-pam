@@ -50,8 +50,8 @@ list<string> security_files = [];
  */
 global define string GetHashMethod () {
     string m = (string) SCR::Read (.etc.default.passwd.crypt);
-    if (m == nil || m == "")
-	m	= "md5";
+    if (m == nil)
+        m = "";
     return m;
 }
 
