@@ -106,13 +106,6 @@ global define boolean Write (boolean write_only) {
 	pw_less ? "yes" : "no" );
     SCR::Write(.sysconfig.displaymanager, nil);
 
-    if (!write_only)
-    {
-	string dm = (string)SCR::Read(.sysconfig.displaymanager.DISPLAYMANAGER);
-	if (dm == "gdm")
-	    SCR::Execute (.target.bash, "/sbin/SuSEconfig --module gdm");
-    }
-
     modified = false;
     return true;
 }
