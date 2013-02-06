@@ -2,7 +2,6 @@
 
 module_DATA =		\
     Pam.ycp		\
-    PamSettings.ycp	\
     Autologin.ycp	\
     Nsswitch.ycp
 

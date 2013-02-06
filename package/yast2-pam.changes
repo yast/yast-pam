@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Feb  6 09:32:37 CET 2013 - jsuchome@suse.cz
+
+- removed PamSettings.ycp, handler of obsolete /etc/default/passwd
+  (bnc#802006)
+- 2.23.1 
+
+-------------------------------------------------------------------
 Thu Oct 11 15:22:37 CEST 2012 - jsuchome@suse.cz
 
 - remove obsolete SuSEconfig call
