@@ -1,9 +1,9 @@
-# Makefile.am for pam/src
+# Sources for pam
 
-module_DATA =		\
-    Pam.ycp		\
-    Autologin.ycp	\
-    Nsswitch.ycp
+module_DATA = \
+  modules/Pam.rb \
+  modules/Nsswitch.rb \
+  modules/Autologin.rb
 
 EXTRA_DIST = $(module_DATA)
 
