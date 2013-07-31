@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jul 31 08:36:33 UTC 2013 - yast-devel@opensuse.org
+
+- converted from YCP to Ruby by YCP Killer
+  (https://github.com/yast/ycp-killer)
+- version 3.0.0
+
+-------------------------------------------------------------------
 Wed Feb  6 09:32:37 CET 2013 - jsuchome@suse.cz
 
 - removed PamSettings.ycp, handler of obsolete /etc/default/passwd
