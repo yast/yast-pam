@@ -25,8 +25,11 @@ Source0:        %{name}-%{version}.tar.bz2
 
 Group:          System/YaST
 License:        GPL-2.0
-BuildRequires:	doxygen yast2-core-devel perl-XML-Writer yast2 yast2-testsuite
+url:            http://github.com/yast/yast-pam
 BuildRequires:  yast2-devtools >= 3.1.10
+BuildRequires:  rubygem(yast-rake)
+# owners of some directories
+BuildRequires:  yast2
 Requires:	yast2
 
 Requires:	pam-config >= 0.8
@@ -36,7 +39,7 @@ Obsoletes:	yast2-agent-pam
 Provides:	yast2-agent-pam-devel
 Obsoletes:	yast2-agent-pam-devel
 
-BuildArchitectures:     noarch
+BuildArch:      noarch
 
 Requires:       yast2-ruby-bindings >= 1.0.0
 
@@ -48,12 +51,13 @@ This agent is used by YaST2 to modify the PAM configuration files
 %prep
 %setup -n %{name}-%{version}
 
+%check
+rake test:unit
+
 %build
-%yast_build
 
 %install
-%yast_install
-
+rake install DESTDIR="%{buildroot}"
 
 %files
 %defattr(-,root,root)
