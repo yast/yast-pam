@@ -33,11 +33,6 @@ Requires:	yast2
 
 Requires:	pam-config >= 0.8
 
-Provides:	yast2-agent-pam
-Obsoletes:	yast2-agent-pam
-Provides:	yast2-agent-pam-devel
-Obsoletes:	yast2-agent-pam-devel
-
 BuildArch:      noarch
 
 Requires:       yast2-ruby-bindings >= 1.0.0
