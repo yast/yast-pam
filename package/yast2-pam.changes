@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Sep 22 16:04:56 UTC 2016 - mvidner@suse.com
+
+- Speed up build by not requiring yast2 (bsc#999203).
+- 3.1.2
+
+-------------------------------------------------------------------
 Wed Nov 13 15:56:18 UTC 2013 - jreidinger@suse.com
 
 - Add explicit COPYING file

@@ -17,7 +17,7 @@
 
 
 Name:           yast2-pam
-Version:        3.1.1
+Version:        3.1.2
 Release:        0
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -28,16 +28,10 @@ License:        GPL-2.0
 url:            http://github.com/yast/yast-pam
 BuildRequires:  yast2-devtools >= 3.1.10
 BuildRequires:  rubygem(yast-rake)
-# owners of some directories
-BuildRequires:  yast2
+
 Requires:	yast2
 
 Requires:	pam-config >= 0.8
-
-Provides:	yast2-agent-pam
-Obsoletes:	yast2-agent-pam
-Provides:	yast2-agent-pam-devel
-Obsoletes:	yast2-agent-pam-devel
 
 BuildArch:      noarch
 
@@ -61,7 +55,10 @@ rake install DESTDIR="%{buildroot}"
 
 %files
 %defattr(-,root,root)
+%dir %{yast_moduledir}
 %{yast_moduledir}/*
+%dir %{yast_scrconfdir}
 %{yast_scrconfdir}/*.scr
+%dir %{yast_agentdir}
 %{yast_agentdir}/ag_passwd
 %doc %{yast_docdir}
