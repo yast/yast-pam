@@ -28,5 +28,5 @@ Makefile.am.common
 tmp.*
 *.log
 *.ybc
-doc/
+doc/autodocs
 /.yardoc
