@@ -62,3 +62,4 @@ rake install DESTDIR="%{buildroot}"
 %dir %{yast_agentdir}
 %{yast_agentdir}/ag_passwd
 %doc %{yast_docdir}
+%license COPYING
