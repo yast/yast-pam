@@ -30,11 +30,23 @@ require "yast"
 
 module Yast
   class AutologinClass < Module
+    include Yast::Logger
+
+    # Display managers that support autologin.
+    # Notice that xdm does NOT support it!
+    #
+    # "autologin-support" is a pseudo-"provides" that maintainers of display
+    # manager packages can add to indicate that the package has that
+    # capability.
+    DISPLAY_MANAGERS = ["autologin-support", "kdm", "gdm", "sddm", "lightdm"].freeze
+
     def main
       textdomain "pam"
 
       Yast.import "Package"
       Yast.import "Popup"
+      Yast.import "Pkg"
+      Yast.import "PackageCallbacks"
 
       # User to log in automaticaly
       @user = ""
@@ -43,15 +55,18 @@ module Yast
       @pw_less = false
 
       # Is autologin feature available?
-      @available = true
+      @available = supported?
 
-      # Is autogion used? Usualy true when user is not empty, but for the first
+      # Is autologin used? Usualy true when user is not empty, but for the first
       # time (during installation), this can be true by default although user is ""
       # (depends on the control file)
       @used = false
 
       # Autologin settings modified?
       @modified = false
+
+      # Pkg stuff initialized?
+      @pkg_initialized = false
     end
 
     # Read autologin settings
@@ -64,7 +79,7 @@ module Yast
         return false
       end
 
-      @available = true
+      @available = supported?
       @user = Convert.to_string(
         SCR.Read(path(".sysconfig.displaymanager.DISPLAYMANAGER_AUTOLOGIN"))
       )
@@ -156,6 +171,39 @@ module Yast
       @used
     end
 
+    # Check if autologin is supported with the currently selected or installed
+    # packages.
+    #
+    # @return Boolean
+    def supported?
+      pkg_lazy_init
+      supported = DISPLAY_MANAGERS.any? { |dm| Pkg.IsSelected(dm) || Pkg.IsProvided(dm) }
+
+      if supported
+        log.info("Autologin is supported")
+      else
+        log.info("Autologin is not supported: No package provides any of #{DISPLAY_MANAGERS}")
+      end
+
+      supported
+    end
+
+    # Initialize the pkg subsystem
+    def pkg_lazy_init
+      return if @pkg_initialized
+
+      # We don't strictly need any package callbacks here, but libzypp might
+      # report an error, and then there would be no user feedback.
+      PackageCallbacks.InitPackageCallbacks
+      Pkg.TargetInitialize("/")
+
+      # Add the installed system to the libzypp pool
+      Pkg.TargetLoad
+
+      @pkg_initialized = true
+    end
+
+
     publish :variable => :user, :type => "string"
     publish :variable => :pw_less, :type => "boolean"
     publish :variable => :available, :type => "boolean"
@@ -165,6 +213,7 @@ module Yast
     publish :function => :Write, :type => "boolean (boolean)"
     publish :function => :Disable, :type => "void ()"
     publish :function => :Use, :type => "void (boolean)"
+    publish :function => :supported?, :type => "boolean ()"
     publish :function => :DisableAndWrite, :type => "boolean (boolean)"
     publish :function => :AskForDisabling, :type => "boolean (string)"
   end
