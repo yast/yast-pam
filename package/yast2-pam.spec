@@ -17,7 +17,7 @@
 
 
 Name:           yast2-pam
-Version:        4.1.1
+Version:        4.2.0
 Release:        0
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
