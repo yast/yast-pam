@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Apr 17 18:44:23 UTC 2019 - Ladislav Slezak <lslezak@suse.cz>
+
+- Skip loading the package manager in the test mode, fixes
+  broken unit tests in yast2-users and yast2-nis-client
+  (related to the previous fix bsc#1128385)
+- 4.2.1
+
+-------------------------------------------------------------------
 Tue Apr 16 12:39:31 UTC 2019 - Stefan Hundhammer <shundhammer@suse.com>
 
 - Offer autologin only if a display manager that supports it is
