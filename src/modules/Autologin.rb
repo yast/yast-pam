@@ -195,10 +195,12 @@ module Yast
       # We don't strictly need any package callbacks here, but libzypp might
       # report an error, and then there would be no user feedback.
       PackageCallbacks.InitPackageCallbacks
-      Pkg.TargetInitialize("/")
+      # FIXME: Mode.test workaround for the old testsuite to not break the other modules
+      Pkg.TargetInitialize("/") unless Mode.test
 
       # Add the installed system to the libzypp pool
-      Pkg.TargetLoad
+      # FIXME: Mode.test workaround for the old testsuite to not break the other modules
+      Pkg.TargetLoad unless Mode.test
 
       @pkg_initialized = true
     end
