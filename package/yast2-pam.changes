@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 14 10:14:04 UTC 2019 - Stefan Hundhammer <shundhammer@suse.com>
+
+- Init pkg target with Installation.destdir, not "/" (bsc#1133541)
+- 4.2.2
+
+-------------------------------------------------------------------
 Wed Apr 17 18:44:23 UTC 2019 - Ladislav Slezak <lslezak@suse.cz>
 
 - Skip loading the package manager in the test mode, fixes
