@@ -47,6 +47,7 @@ module Yast
       Yast.import "Popup"
       Yast.import "Pkg"
       Yast.import "PackageCallbacks"
+      Yast.import "Installation"
 
       # User to log in automaticaly
       @user = ""
@@ -196,7 +197,7 @@ module Yast
       # report an error, and then there would be no user feedback.
       PackageCallbacks.InitPackageCallbacks
       # FIXME: Mode.test workaround for the old testsuite to not break the other modules
-      Pkg.TargetInitialize("/") unless Mode.test
+      Pkg.TargetInitialize(Installation.destdir) unless Mode.test
 
       # Add the installed system to the libzypp pool
       # FIXME: Mode.test workaround for the old testsuite to not break the other modules
