@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu May 16 11:06:32 UTC 2019 - Ladislav Slezák <lslezak@suse.cz>
+
+- Fixed packager initialization (fixes missing GPG keys in the
+  installed system) (bsc#1135295)
+- 4.2.3
+
+-------------------------------------------------------------------
 Tue May 14 10:14:04 UTC 2019 - Stefan Hundhammer <shundhammer@suse.com>
 
 - Init pkg target with Installation.destdir, not "/" (bsc#1133541)
