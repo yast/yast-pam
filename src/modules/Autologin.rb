@@ -48,6 +48,7 @@ module Yast
       Yast.import "Pkg"
       Yast.import "PackageCallbacks"
       Yast.import "Installation"
+      Yast.import "Stage"
 
       # User to log in automaticaly
       @user = ""
@@ -191,7 +192,9 @@ module Yast
 
     # Initialize the pkg subsystem
     def pkg_lazy_init
-      return if @pkg_initialized
+      # do not initialize the package manager when running in inst-sys,
+      # it is initialized by the installation framework (bsc#1135295)
+      return if Stage.initial || @pkg_initialized
 
       # We don't strictly need any package callbacks here, but libzypp might
       # report an error, and then there would be no user feedback.
