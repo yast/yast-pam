@@ -13,6 +13,9 @@ config.sub
 configure
 configure.ac
 depcomp
+doc/**/*.html
+doc/**/*.css
+doc/**/*.js
 install-sh
 *.pot
 libtool
@@ -22,6 +25,7 @@ missing
 mkinstalldirs
 stamp-h*
 Makefile.am.common
+.yardoc/
 *.ami
 *.bz2
 .dep
