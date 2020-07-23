@@ -79,45 +79,45 @@ describe Yast::Nsswitch do
         end
       end
     end
+  end
 
-    describe "#WriteAutofs" do
-      let(:db_name) { "automount" }
+  describe "#WriteAutofs" do
+    let(:db_name) { "automount" }
 
-      context "when services should start" do
-        let(:start) { true }
+    context "when services should start" do
+      let(:start) { true }
 
-        context "and it is not enabled yet" do
-          let(:source) { "nis" }
+      context "and it is not enabled yet" do
+        let(:source) { "nis" }
 
-          it "enables it by adding it to service specifications" do
-            nsswitch.WriteAutofs(start, source)
-            nsswitch.Write
+        it "enables it by adding it to service specifications" do
+          nsswitch.WriteAutofs(start, source)
+          nsswitch.Write
 
-            expect(File.read(file_path)).to match(/automount:\s+nis/)
-          end
+          expect(File.read(file_path)).to match(/automount:\s+nis/)
         end
       end
+    end
 
-      context "when services should not start" do
-        let(:start) { false }
+    context "when services should not start" do
+      let(:start) { false }
 
-        context "but it is enabled" do
-          let(:source) { "nis" }
+      context "but it is enabled" do
+        let(:source) { "nis" }
 
-          before do
-            nsswitch.WriteDb(db_name, ["nis", "ldap"])
-            nsswitch.Write
-          end
+        before do
+          nsswitch.WriteDb(db_name, ["nis", "ldap"])
+          nsswitch.Write
+        end
 
-          it "disables it by removing it from service specifications" do
-            expect(File.read(file_path)).to match(/automount:\s+nis ldap/)
+        it "disables it by removing it from service specifications" do
+          expect(File.read(file_path)).to match(/automount:\s+nis ldap/)
 
-            nsswitch.WriteAutofs(start, source)
-            nsswitch.Write
+          nsswitch.WriteAutofs(start, source)
+          nsswitch.Write
 
-            expect(File.read(file_path)).to match(/automount:\s+ldap/)
-            expect(File.read(file_path)).to_not match(/automount:\s+nis/)
-          end
+          expect(File.read(file_path)).to match(/automount:\s+ldap/)
+          expect(File.read(file_path)).to_not match(/automount:\s+nis/)
         end
       end
     end
