@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Fri Jul 24 11:01:03 UTC 2020 - David Diaz <dgonzalez@suse.com>
 
-- Add a CFA based class to manage nsswitch.conf (bsc#1173119).
+- Support reading nsswitch.conf from /usr/etc  (bsc#1173119).
 - 4.3.0
 
 -------------------------------------------------------------------
