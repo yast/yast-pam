@@ -119,26 +119,6 @@ describe CFA::Nsswitch do
     end
   end
 
-  describe "#modified?" do
-    before  { subject.load }
-
-    context "when it has changed" do
-      before do
-        subject.update_entry("hosts", ["dns", "nis"])
-      end
-
-      it "returns true" do
-        expect(subject.modified?).to eq(true)
-      end
-    end
-
-    context "when it has not changed" do
-      it "returns false" do
-        expect(subject.modified?).to eq(false)
-      end
-    end
-  end
-
   describe "#entries" do
     before { subject.load }
 

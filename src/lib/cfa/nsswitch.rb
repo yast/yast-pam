@@ -148,18 +148,13 @@ module CFA
     #
     # @see CFA::BaseModel#save
     def save
-      return unless modified?
-
       @parser.file_name = write_path if @parser.respond_to?(:file_name=)
-      @current_content = @parser.serialize(data)
-      @file_handler.write(write_path, @current_content)
-    end
+      content = @parser.serialize(data)
 
-    # Whether the content has changed
-    #
-    # @return [Boolean] true if content has been modified; false otherwise.
-    def modified?
-      @current_content != @parser.serialize(data)
+      if content != @current_content
+        @file_handler.write(write_path, content)
+        @current_content = content
+      end
     end
 
   private
