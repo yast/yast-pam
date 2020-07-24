@@ -157,8 +157,8 @@ describe CFA::Nsswitch do
     end
 
     context "when given a not available database entry" do
-      it "returns nil" do
-        expect(subject.services_for("foo")).to be_nil
+      it "returns an empty list" do
+        expect(subject.services_for("foo")).to eq([])
       end
     end
   end
@@ -194,11 +194,11 @@ describe CFA::Nsswitch do
     before { subject.load }
 
     it "deletes given entry" do
-      expect(subject.services_for("hosts")).to_not be_nil
+      expect(subject.services_for("hosts")).to eq(["db", "files"])
 
       subject.delete_entry("hosts")
 
-      expect(subject.services_for("hosts")).to be_nil
+      expect(subject.services_for("hosts")).to eq([])
     end
   end
 end

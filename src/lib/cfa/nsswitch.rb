@@ -117,10 +117,9 @@ module CFA
     #
     # @param db_name [String] the database name, e.g., "passwd" or "hosts"
     #
-    # @return [Array<String>, nil] database service specifications or nil if db_name is not found
-    # otherwise
+    # @return [Array<String>] database service specifications or empty list if db_name is not found
     def services_for(db_name)
-      databases[db_name]&.services
+      databases[db_name]&.services || []
     end
 
     # Update (or create if it does not exist yet) the entry for given database name
