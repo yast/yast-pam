@@ -34,6 +34,7 @@ describe Yast::Nsswitch do
     begin
       FileUtils.cp_r(original_data_example, tmpdir)
       change_scr_root(tmpdir, &example)
+      nsswitch.reset
     ensure
       FileUtils.remove_entry(tmpdir)
     end
@@ -58,24 +59,32 @@ describe Yast::Nsswitch do
   end
 
   describe "#WriteDb" do
-    context "when given an already defnied database entry" do
+    it "changes given database without writing to the file" do
+      expect(File.read(file_path)).to_not match(/ethers:/)
+      expect(nsswitch.ReadDb("ethers")).to eq([])
+
+      nsswitch.WriteDb("ethers", ["nis", "files"])
+
+      expect(nsswitch.ReadDb("ethers")).to eq(["nis", "files"])
+      expect(File.read(file_path)).to_not match(/ethers:/)
+    end
+
+    context "when given an already defined database entry" do
       it "replaces its service specifications with given ones" do
-        expect(File.read(file_path)).to match(/hosts:\s+db files/)
+        expect(nsswitch.ReadDb("hosts")).to eq(["db", "files"])
 
         nsswitch.WriteDb("hosts", ["nis", "files"])
-        nsswitch.Write
 
-        expect(File.read(file_path)).to match(/hosts:\s+nis files/)
+        expect(nsswitch.ReadDb("hosts")).to eq(["nis", "files"])
       end
 
       context "when given not defined yet database entry" do
         it "adds it to the configuration" do
-          expect(File.read(file_path)).to_not match(/ethers:/)
+          expect(nsswitch.ReadDb("ethers")).to eq([])
 
           nsswitch.WriteDb("ethers", ["nis", "files"])
-          nsswitch.Write
 
-          expect(File.read(file_path)).to match(/ethers:\s+nis files/)
+          expect(nsswitch.ReadDb("ethers")).to eq(["nis", "files"])
         end
       end
     end
@@ -92,7 +101,6 @@ describe Yast::Nsswitch do
 
         it "enables it by adding it to service specifications" do
           nsswitch.WriteAutofs(start, source)
-          nsswitch.Write
 
           expect(File.read(file_path)).to match(/automount:\s+nis/)
         end
@@ -114,11 +122,54 @@ describe Yast::Nsswitch do
           expect(File.read(file_path)).to match(/automount:\s+nis ldap/)
 
           nsswitch.WriteAutofs(start, source)
-          nsswitch.Write
 
           expect(File.read(file_path)).to match(/automount:\s+ldap/)
           expect(File.read(file_path)).to_not match(/automount:\s+nis/)
         end
+      end
+    end
+  end
+
+  describe "#Write" do
+    context "when everything is right" do
+      it "returns true" do
+        nsswitch.WriteDb("ethers", ["nis", "files"])
+        expect(nsswitch.Write).to eq(true)
+      end
+
+      it "writes changes to the file" do
+        expect(File.read(file_path)).to_not match(/ethers:/)
+
+        nsswitch.WriteDb("ethers", ["nis", "files"])
+        nsswitch.Write
+
+        expect(File.read(file_path)).to match(/ethers:\s+nis files/)
+      end
+    end
+
+    context "when something is wrong" do
+      it "returns false" do
+        # there is not support for actions yet
+        nsswitch.WriteDb("ethers", ["nis [NOTFOUND=return]", "files"])
+        expect(nsswitch.Write).to eq(false)
+      end
+
+      it "reports an error" do
+        # there is not support for actions yet
+        nsswitch.WriteDb("ethers", ["nis [NOTFOUND=return]", "files"])
+        expect(Yast::Message).to receive(:ErrorWritingFile).with(/nsswitch\.conf/)
+        expect(Yast::Report).to receive(:Error)
+        nsswitch.Write
+      end
+
+      it "does not change the file" do
+        expect(File.read(file_path)).to_not match(/ethers:/)
+
+        # there is not support for actions yet
+        nsswitch.WriteDb("ethers", ["nis [NOTFOUND=return]", "files"])
+        nsswitch.Write
+
+        expect(File.read(file_path)).to_not match(/ethers:\s+nis files/)
       end
     end
   end

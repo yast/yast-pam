@@ -34,8 +34,6 @@ module Yast
     def main
       Yast.import "Message"
       Yast.import "Report"
-
-      @cfa_model = CFA::Nsswitch.load
     end
 
     # Reads a database entry from nsswitch_conf and returns it as a list
@@ -60,10 +58,12 @@ module Yast
 
     # Configures the name service switch for autofs according to chosen settings
     #
+    # @see #Write
+    #
     # @param start [Boolean] whether autofs and service (ldap/nis) should be started
     # @param source [String] source for automounter data (ldap/nis)
     #
-    # @return [Boolean] true if changes are done; false otherwise
+    # @return [Boolean] true on success; false otherwise
     def WriteAutofs(start, source)
       # nsswitch automount:
       # bracket options not allowed
@@ -82,8 +82,16 @@ module Yast
       end
 
       cfa_model.update_entry("automount", automount_services)
-      cfa_model.save
+      Write()
+    end
 
+    # Writes changes to the file
+    #
+    # @note sadly, this method will directly report to the user if something goes wrong.
+    #
+    # @return [Boolean] true on success; false otherwise
+    def Write
+      cfa_model.save
       true
     rescue CFA::AugeasSerializingError
       Report.Error(Message.ErrorWritingFile(cfa_model.write_path))
@@ -91,10 +99,11 @@ module Yast
       false
     end
 
-    # Writes the edited files to the disk
-    # @return true on success
-    def Write
-      cfa_model.save
+    # Convenience method to force the CFA model reloading for next action
+    #
+    # Especially useful for testing the behavior
+    def reset
+      @cfa_model = nil
     end
 
     publish :function => :ReadDb, :type => "list <string> (string)"
@@ -104,7 +113,9 @@ module Yast
 
     private
 
-    attr_reader :cfa_model
+    def cfa_model
+      @cfa_model ||= CFA::Nsswitch.load
+    end
   end
 
   Nsswitch = NsswitchClass.new
