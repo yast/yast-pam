@@ -15,37 +15,36 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
+Name:          yast2-pam
+Version:       4.3.0
+Release:       0
+Summary:       YaST2 - PAM Agent
 
-Name:           yast2-pam
-Summary:	      YaST2 - PAM Agent
-Version:        4.3.0
-Release:        0
+Group:         System/YaST
+License:       GPL-2.0-only
+URL:           http://github.com/yast/yast-pam
+Source0:       %{name}-%{version}.tar.bz2
+BuildRoot:     %{_tmppath}/%{name}-%{version}-build
 
-BuildArch:      noarch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Source0:        %{name}-%{version}.tar.bz2
-
-Group:          System/YaST
-License:        GPL-2.0-only
-url:            http://github.com/yast/yast-pam
-
-Requires:	yast2
+BuildRequires: yast2
+BuildRequires: yast2-devtools >= 3.1.10
+BuildRequires: rubygem(%{rb_default_ruby_abi}:yast-rake)
 # cfa for parsing nsswitch
-Requires:  rubygem(%rb_default_ruby_abi:cfa) >= 0.6.4
+BuildRequires: rubygem(%rb_default_ruby_abi:cfa) >= 0.6.4
 # lenses are needed to use cfa
-Requires:  augeas-lenses
-Requires:	pam-config >= 0.8
-Requires:       yast2-ruby-bindings >= 1.0.0
-
-BuildRequires:  yast2
-BuildRequires:  yast2-devtools >= 3.1.10
-BuildRequires:  rubygem(%{rb_default_ruby_abi}:yast-rake)
-# cfa for parsing nsswitch
-BuildRequires:  rubygem(%rb_default_ruby_abi:cfa) >= 0.6.4
-# lenses are needed to use cfa
-BuildRequires:  augeas-lenses
+BuildRequires: augeas-lenses
 # testsuite
-BuildRequires:  rubygem(%rb_default_ruby_abi:rspec)
+BuildRequires: rubygem(%rb_default_ruby_abi:rspec)
+
+Requires:	     yast2
+# cfa for parsing nsswitch
+Requires:      rubygem(%rb_default_ruby_abi:cfa) >= 0.6.4
+# lenses are needed to use cfa
+Requires:      augeas-lenses
+Requires:	     pam-config >= 0.8
+Requires:      yast2-ruby-bindings >= 1.0.0
+
+BuildArch:     noarch
 
 %description
 This agent is used by YaST2 to modify the PAM configuration files
