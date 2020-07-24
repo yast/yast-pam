@@ -65,19 +65,11 @@ module Yast
     #
     # @return [Boolean] true on success; false otherwise
     def WriteAutofs(start, source)
-      # nsswitch automount:
-      # bracket options not allowed
       automount_services = cfa_model.services_for("automount")
-      enabled = automount_services.include?(source)
 
-      # enable it if it is not enabled yet and both services run
-      automount_services -= [source] if !start && enabled
-
-      # enable it if it is not enabled yet and both services run
-      if start && !enabled
-        automount_services += [source]
-      # disable it if it is enabled and either service does not run
-      elsif !start && enabled
+      if start
+        automount_services |= [source]
+      else
         automount_services -= [source]
       end
 
