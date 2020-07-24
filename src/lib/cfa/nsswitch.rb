@@ -29,9 +29,9 @@ module CFA
   # @note The NSS configuration file cannot be overwritten partially, which means that once
   #   /etc/nsswith.conf (local) file exists in the system /usr/etc/nsswitch.conf (vendor) will be
   #   completely ignored.  In other words, it does not allow to override single entries.
-  #   Consequently, to guarantee not changing anything more than desired, the content will be read
-  #   from the vendor file if the local one does not exist yet but will be always written to the
-  #   local file.
+  #   Consequently, to guarantee not losing full distribution provided configuration the content
+  #   will be read from the vendor file if the local one does not exist yet but will be always
+  #   written to the local file.
   #
   # @example Reading service specifications of a database
   #   file = Nsswitch.new
@@ -76,12 +76,19 @@ module CFA
       end
     end
 
+    attr_reader :load_path, :write_path
+
     # Constructor
     #
     # @param file_handler [#read,#write] something able to read/write a string (like File)
     #
     # @see CFA::BaseModel#initialize
     def initialize(file_handler: Yast::TargetFile)
+      # Path for loading the content
+      @load_path = Yast::FileUtils.Exists(LOCAL_PATH) ? LOCAL_PATH : VENDOR_PATH
+      # Path for writing the content, always the local file
+      @write_path = LOCAL_PATH
+
       super(AugeasParser.new("nsswitch.lns"), load_path, file_handler: file_handler)
     end
 
@@ -157,20 +164,6 @@ module CFA
     end
 
   private
-
-    # The path for loading the content
-    #
-    # @return [String] path to local configuration file if it exists; path to vendor one otherwise
-    def load_path
-      Yast::FileUtils.Exists(LOCAL_PATH) ? LOCAL_PATH : VENDOR_PATH
-    end
-
-    # The path for writing the content
-    #
-    # @return [String] path to local configuration file
-    def write_path
-      LOCAL_PATH
-    end
 
     # Return the CFA::Matcher for given database name
     #

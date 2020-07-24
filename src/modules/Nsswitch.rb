@@ -86,7 +86,7 @@ module Yast
 
       true
     rescue CFA::AugeasSerializingError
-      Report.Error(Message.ErrorWritingFile("/etc/nsswitch.conf"))
+      Report.Error(Message.ErrorWritingFile(cfa_model.write_path))
 
       false
     end
