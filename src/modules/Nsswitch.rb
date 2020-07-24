@@ -27,78 +27,87 @@
 #
 # $Id$
 require "yast"
+require "cfa/nsswitch"
 
 module Yast
   class NsswitchClass < Module
     def main
-
       Yast.import "Message"
       Yast.import "Report"
     end
 
     # Reads a database entry from nsswitch_conf and returns it as a list
-    # @param [String] db eg. "passwd"
-    # @return   eg. ["files", "nis"]
-    def ReadDb(db)
-      db_s = Convert.to_string(
-        SCR.Read(Builtins.add(path(".etc.nsswitch_conf"), db))
-      )
-      db_s = "" if db_s == nil
-      Builtins.filter(Builtins.splitstring(db_s, " \t")) { |s| s != "" }
+    #
+    # @see CFA::Nsswitch#services_for
+    #
+    # @param db_name [String] database entry name, e.g. "passwd"
+    def ReadDb(db_name)
+      cfa_model.services_for(db_name)
     end
 
 
     # Writes a database entry as a list to nsswitch_conf
-    # @param [String] db eg. "passwd"
-    # @param [Array<String>] entries eg. ["files", "nis"]
-    # @return success?
-    def WriteDb(db, entries)
-      entries = deep_copy(entries)
-      # if there are no entries, delete the key using nil
-      entry = Builtins.mergestring(entries, " ")
-      SCR.Write(
-        Builtins.add(path(".etc.nsswitch_conf"), db),
-        entry == "" ? nil : entry
-      )
+    #
+    # @see CFA::Nsswitch#update_entry
+    #
+    # @param db_name [String] database entry name, e.g. "passwd"
+    # @param services [Array<String>] service specs, e.g. ["files", "nis"]
+    def WriteDb(db_name, services)
+      cfa_model.update_entry(db_name, services)
     end
-    # Configures the name service switch for autofs
-    # according to chosen settings
-    # @param [Boolean] start autofs and service (ldap/nis) should be started
-    # @param [String] source for automounter data (ldap/nis)
-    # @return success?
-    def WriteAutofs(start, source)
-      ok = true
 
-      # nsswitch automount:
-      # bracket options not allowed, order does not matter
-      automount_l = ReadDb("automount")
-      enabled = Builtins.contains(automount_l, source)
-      # enable it if it is not enabled yet and both services run
-      if start && !enabled
-        automount_l = Builtins.add(automount_l, source)
-        ok = WriteDb("automount", automount_l)
-        ok = ok && SCR.Write(path(".etc.nsswitch_conf"), nil)
-      # disable it if it is enabled and either service does not run
-      elsif !start && enabled
-        automount_l = Builtins.filter(automount_l) { |s| s != source }
-        ok = WriteDb("automount", automount_l)
-        ok = ok && SCR.Write(path(".etc.nsswitch_conf"), nil)
+    # Configures the name service switch for autofs according to chosen settings
+    #
+    # @see #Write
+    #
+    # @param start [Boolean] whether autofs and service (ldap/nis) should be started
+    # @param source [String] source for automounter data (ldap/nis)
+    #
+    # @return [Boolean] true on success; false otherwise
+    def WriteAutofs(start, source)
+      automount_services = cfa_model.services_for("automount")
+
+      if start
+        automount_services |= [source]
+      else
+        automount_services -= [source]
       end
 
-      Report.Error(Message.ErrorWritingFile("/etc/nsswitch.conf")) if !ok
-      ok
+      cfa_model.update_entry("automount", automount_services)
+      Write()
     end
 
-    # Writes the edited files to the disk
-    # @return true on success
+    # Writes changes to the file
+    #
+    # @note sadly, this method will directly report to the user if something goes wrong.
+    #
+    # @return [Boolean] true on success; false otherwise
     def Write
-      SCR.Write(path(".etc.nsswitch_conf"), nil)
+      cfa_model.save
+      true
+    rescue CFA::AugeasSerializingError
+      Report.Error(Message.ErrorWritingFile(cfa_model.write_path))
+
+      false
+    end
+
+    # Convenience method to force the CFA model reloading for next action
+    #
+    # Especially useful for testing the behavior
+    def reset
+      @cfa_model = nil
     end
 
     publish :function => :ReadDb, :type => "list <string> (string)"
     publish :function => :WriteDb, :type => "boolean (string, list <string>)"
     publish :function => :WriteAutofs, :type => "boolean (boolean, string)"
     publish :function => :Write, :type => "boolean ()"
+
+    private
+
+    def cfa_model
+      @cfa_model ||= CFA::Nsswitch.load
+    end
   end
 
   Nsswitch = NsswitchClass.new

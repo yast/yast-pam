@@ -30,3 +30,4 @@ tmp.*
 *.ybc
 doc/autodocs
 /.yardoc
+/coverage
