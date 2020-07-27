@@ -31,6 +31,8 @@ require "cfa/nsswitch"
 
 module Yast
   class NsswitchClass < Module
+    include Yast::Logger
+
     def main
       Yast.import "Message"
       Yast.import "Report"
@@ -85,8 +87,10 @@ module Yast
     def Write
       cfa_model.save
       true
-    rescue CFA::AugeasSerializingError
+    rescue CFA::AugeasSerializingError => e
       Report.Error(Message.ErrorWritingFile(cfa_model.write_path))
+      log.error("Something went wrong when writting to #{cfa_model.write_path}")
+      log.error(e.message)
 
       false
     end
