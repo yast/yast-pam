@@ -25,14 +25,43 @@
 # Authors:	Jiri Suchomel <jsuchome@suse.cz>
 # Flags:	Unstable
 #
-# $Id$
-#
 require "yast"
+require "yast2/execute"
 
 module Yast
   class PamClass < Module
-    def main
+    include Yast::Logger
 
+    def main
+    end
+
+    PAM_CONFIG_BIN = "/usr/sbin/pam-config".freeze
+
+    # List PAM modules.
+    #
+    # The returned module names do not include the "pam_" prefix nor
+    # the ".so" suffix. So just "pwquality" instead of "pam_pwquality.so".
+    #
+    # @return [Array{String}]
+    def List
+      begin
+        lines = Yast::Execute.locally!(PAM_CONFIG_BIN, "--list-modules",
+          :stdout => :capture).split("\n")
+      rescue Cheetah::ExecutionFailed => e
+        log.error "pam-config --list-modules failed #{e.message}"
+        return []
+      end
+
+      rx = /[ \t]*pam_([a-z0-9_]+)\.so[ \t]*/
+
+      mods = lines.reduce([]) do |mods, line|
+        m = line.match(rx)
+        m ? mods.push(m[1]) : mods
+      end
+
+      log.info("pam modules #{mods}")
+
+      mods
     end
 
     # Query PAM configuration for status of given module
@@ -42,10 +71,7 @@ module Yast
     def Query(mod)
       ret = {}
       out = Convert.to_map(
-        SCR.Execute(
-          path(".target.bash_output"),
-          Ops.add("/usr/sbin/pam-config -q --", mod)
-        )
+        SCR.Execute(path(".target.bash_output"), PAM_CONFIG_BIN + " -q --" + mod)
       )
       if Ops.get_integer(out, "exit", 0) != 0
         Builtins.y2warning("pam-config for %1 returned %2", mod, out)
@@ -78,10 +104,7 @@ module Yast
     # @return success
     def Add(mod)
       out = Convert.to_map(
-        SCR.Execute(
-          path(".target.bash_output"),
-          Ops.add("/usr/sbin/pam-config -a --", mod)
-        )
+        SCR.Execute(path(".target.bash_output"), PAM_CONFIG_BIN + " -a --" + mod)
       )
       if Ops.get_integer(out, "exit", 0) != 0
         Builtins.y2warning("pam-config for %1 returned %2", mod, out)
@@ -95,10 +118,7 @@ module Yast
     # @return success
     def Remove(mod)
       out = Convert.to_map(
-        SCR.Execute(
-          path(".target.bash_output"),
-          Ops.add("/usr/sbin/pam-config -d --", mod)
-        )
+        SCR.Execute(path(".target.bash_output"), PAM_CONFIG_BIN + " -d --" + mod)
       )
       if Ops.get_integer(out, "exit", 0) != 0
         Builtins.y2warning("pam-config for %1 returned %2", mod, out)
