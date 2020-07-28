@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jul 28 11:35:47 UTC 2020 - Ancor Gonzalez Sosa <ancor@suse.com>
+
+- Fixed a bug, introduced in the latest version, related to
+  deletion of nsswitch entries (related to bsc#1173119).
+- 4.3.2
+
+-------------------------------------------------------------------
 Tue Jul 28 11:03:14 CEST 2020 - aschnell@suse.com
 
 - Added function to query PAM modules (bsc#1171318).

@@ -46,14 +46,22 @@ module Yast
     end
 
 
-    # Writes a database entry as a list to nsswitch_conf
+    # Writes a database entry as a list to nsswitch_conf or deletes an existing
+    # database entry
     #
     # @see CFA::Nsswitch#update_entry
+    # @see CFA::Nsswitch#delete_entry
     #
     # @param db_name [String] database entry name, e.g. "passwd"
-    # @param services [Array<String>] service specs, e.g. ["files", "nis"]
+    # @param services [Array<String>] use a valid service specs (e.g. ["files", "nis"])
+    #   to write an entry or an empty array to remove the existing entry
     def WriteDb(db_name, services)
-      cfa_model.update_entry(db_name, services)
+      # For improved compatibility with the old implementation, check also [""]
+      if services.empty? || services == [""]
+        cfa_model.delete_entry(db_name)
+      else
+        cfa_model.update_entry(db_name, services)
+      end
     end
 
     # Configures the name service switch for autofs according to chosen settings
