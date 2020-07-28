@@ -78,13 +78,33 @@ describe Yast::Nsswitch do
         expect(nsswitch.ReadDb("hosts")).to eq(["nis", "files"])
       end
 
-      context "when given not defined yet database entry" do
-        it "adds it to the configuration" do
+      context "if the service specification is an empty array" do
+        it "removes the database entry" do
+          expect(nsswitch.ReadDb("hosts")).to eq(["db", "files"])
+
+          nsswitch.WriteDb("hosts", [])
+
+          expect(nsswitch.ReadDb("hosts")).to eq([])
+        end
+      end
+    end
+
+    context "when given not defined yet database entry" do
+      it "adds it to the configuration" do
+        expect(nsswitch.ReadDb("ethers")).to eq([])
+
+        nsswitch.WriteDb("ethers", ["nis", "files"])
+
+        expect(nsswitch.ReadDb("ethers")).to eq(["nis", "files"])
+      end
+
+      context "if the service specification is an empty array" do
+        it "changes nothing" do
           expect(nsswitch.ReadDb("ethers")).to eq([])
 
-          nsswitch.WriteDb("ethers", ["nis", "files"])
+          nsswitch.WriteDb("ethers", [])
 
-          expect(nsswitch.ReadDb("ethers")).to eq(["nis", "files"])
+          expect(nsswitch.ReadDb("ethers")).to eq([])
         end
       end
     end
@@ -139,11 +159,18 @@ describe Yast::Nsswitch do
 
       it "writes changes to the file" do
         expect(File.read(file_path)).to_not match(/ethers:/)
+        expect(File.read(file_path)).to match(/hosts:/)
+        expect(File.read(file_path)).to_not match(/netmasks:/)
 
         nsswitch.WriteDb("ethers", ["nis", "files"])
+        # Test deleting entries
+        nsswitch.WriteDb("hosts", [])
+        nsswitch.WriteDb("netmasks", [])
         nsswitch.Write
 
         expect(File.read(file_path)).to match(/ethers:\s+nis files/)
+        expect(File.read(file_path)).to_not match(/hosts:/)
+        expect(File.read(file_path)).to_not match(/netmasks:/)
       end
     end
 

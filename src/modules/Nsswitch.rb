@@ -53,7 +53,12 @@ module Yast
     # @param db_name [String] database entry name, e.g. "passwd"
     # @param services [Array<String>] service specs, e.g. ["files", "nis"]
     def WriteDb(db_name, services)
-      cfa_model.update_entry(db_name, services)
+      # For improved compatibility with the old implementation, check also [""]
+      if services.empty? || services == [""]
+        cfa_model.delete_entry(db_name)
+      else
+        cfa_model.update_entry(db_name, services)
+      end
     end
 
     # Configures the name service switch for autofs according to chosen settings
