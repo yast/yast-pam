@@ -103,7 +103,7 @@ module Yast
     publish :function => :WriteAutofs, :type => "boolean (boolean, string)"
     publish :function => :Write, :type => "boolean ()"
 
-    private
+  private
 
     def cfa_model
       @cfa_model ||= CFA::Nsswitch.load
