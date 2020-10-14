@@ -16,7 +16,7 @@
 #
 
 Name:          yast2-pam
-Version:       4.3.2
+Version:       4.3.3
 Release:       0
 Summary:       YaST2 - PAM Agent
 
