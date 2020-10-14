@@ -56,9 +56,6 @@ module Yast
       # Login without passwords?
       @pw_less = false
 
-      # Is autologin feature available?
-      @available = supported?
-
       # Is autologin used? Usualy true when user is not empty, but for the first
       # time (during installation), this can be true by default although user is ""
       # (depends on the control file)
@@ -69,6 +66,11 @@ module Yast
 
       # Pkg stuff initialized?
       @pkg_initialized = false
+    end
+
+    def available
+      @available = supported? if @available.nil?
+      @available
     end
 
     # Read autologin settings
@@ -102,7 +104,7 @@ module Yast
     # @param [Boolean] write_only when true, suseconfig script will not be run
     # @return written anything?
     def Write(write_only)
-      return false if !@available || !@modified
+      return false if !available || !@modified
 
       Builtins.y2milestone(
         "writing user %1 for autologin; pw_less is %2",
@@ -212,7 +214,6 @@ module Yast
 
     publish :variable => :user, :type => "string"
     publish :variable => :pw_less, :type => "boolean"
-    publish :variable => :available, :type => "boolean"
     publish :variable => :used, :type => "boolean"
     publish :variable => :modified, :type => "boolean"
     publish :function => :Read, :type => "boolean ()"
