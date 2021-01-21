@@ -1,5 +1,8 @@
 # YaST - The PAM Configuration Module #
 
-[![Travis Build](https://travis-ci.org/yast/yast-pam.svg?branch=master)](https://travis-ci.org/yast/yast-pam)
-[![Jenkins Build](http://img.shields.io/jenkins/s/https/ci.opensuse.org/yast-pam-master.svg)](https://ci.opensuse.org/view/Yast/job/yast-pam-master/)
-
+[![Workflow Status](https://github.com/yast/yast-pam/workflows/CI/badge.svg?branch=master)](
+https://github.com/yast/yast-pam/actions?query=branch%3Amaster)
+[![Jenkins Status](https://ci.opensuse.org/buildStatus/icon?job=yast-yast-pam-master)](
+https://ci.opensuse.org/view/Yast/job/yast-yast-pam-master/)
+[![Coverage Status](https://img.shields.io/coveralls/yast/yast-pam.svg)](https://coveralls.io/r/yast/yast-pam?branch=master)
+[![inline docs](http://inch-ci.org/github/yast/yast-pam.svg?branch=master)](http://inch-ci.org/github/yast/yast-pam)

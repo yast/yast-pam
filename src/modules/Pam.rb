@@ -65,7 +65,7 @@ module Yast
     end
 
     # Query PAM configuration for status of given module
-    # @param string PAM module (e.g. ldap, cracklib)
+    # @param mod [String] PAM module (e.g. ldap, cracklib)
     # @return [Hash{String => Array}] keys are 'management groups' (e.g. auth), values
     # are lists of options
     def Query(mod)
@@ -100,7 +100,7 @@ module Yast
     end
 
     # Add options or new PAM module
-    # @param string PAM module or option
+    # @param mod [String] PAM module or option
     # @return success
     def Add(mod)
       out = Convert.to_map(
@@ -114,7 +114,7 @@ module Yast
     end
 
     # Remove options or PAM module
-    # @param string PAM module or option
+    # @param mod [String] PAM module or option
     # @return success
     def Remove(mod)
       out = Convert.to_map(
@@ -128,8 +128,8 @@ module Yast
     end
 
     # Add/Remove option or PAM module
-    # @param string PAM module or option
-    # @param boolean true for adding, false for removing
+    # @param mod [String] PAM module or option
+    # @param set [Boolean] true for adding, false for removing
     # @return success
     def Set(mod, set)
       set ? Add(mod) : Remove(mod)
