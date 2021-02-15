@@ -175,6 +175,10 @@ describe Yast::Nsswitch do
     end
 
     context "when something is wrong" do
+      before do
+        allow(Yast::Report).to receive(:Error)
+      end
+
       it "returns false" do
         # there is not support for actions yet
         nsswitch.WriteDb("ethers", ["nis [NOTFOUND=return]", "files"])
