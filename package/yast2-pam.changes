@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Mar 28 12:04:17 UTC 2022 - Samuel Cabrero <scabrero@suse.de>
+
+- Add a new function to detect if the system runs a dual PAM stack
+  (related to bsc#1190873).
+- 4.4.1
+
+-------------------------------------------------------------------
 Tue Apr 20 13:51:55 UTC 2021 - Ladislav Slezák <lslezak@suse.cz>
 
 - 4.4.0 (bsc#1185510)

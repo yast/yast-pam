@@ -33,6 +33,7 @@ module Yast
     include Yast::Logger
 
     def main
+      Yast.import "FileUtils"
     end
 
     PAM_CONFIG_BIN = "/usr/sbin/pam-config".freeze
@@ -135,11 +136,21 @@ module Yast
       set ? Add(mod) : Remove(mod)
     end
 
+    # Check if the system runs a dual PAM stack (64 and 32 bits)
+    # @return true if system runs dual PAM stack
+    def DualStack
+      if FileUtils.Exists("/lib/security") && FileUtils.Exists("/lib/libpam.so.0")
+        return true
+      end
+      false
+    end
+
     publish :function => :Query, :type => "map (string)"
     publish :function => :Enabled, :type => "boolean (string)"
     publish :function => :Add, :type => "boolean (string)"
     publish :function => :Remove, :type => "boolean (string)"
     publish :function => :Set, :type => "boolean (string, boolean)"
+    publish :function => :DualStack, :type => "boolean (string)"
   end
 
   Pam = PamClass.new
