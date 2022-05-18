@@ -45,10 +45,6 @@ module Yast
 
       Yast.import "Package"
       Yast.import "Popup"
-      Yast.import "Pkg"
-      Yast.import "PackageCallbacks"
-      Yast.import "Installation"
-      Yast.import "Stage"
 
       # User to log in automaticaly
       @user = ""
@@ -180,8 +176,7 @@ module Yast
     #
     # @return Boolean
     def supported?
-      pkg_lazy_init
-      supported = DISPLAY_MANAGERS.any? { |dm| Pkg.IsSelected(dm) || Pkg.IsProvided(dm) }
+      supported = DISPLAY_MANAGERS.any? { |dm| Package.Available(dm) }
 
       if supported
         log.info("Autologin is supported")
@@ -191,26 +186,6 @@ module Yast
 
       supported
     end
-
-    # Initialize the pkg subsystem
-    def pkg_lazy_init
-      # do not initialize the package manager when running in inst-sys,
-      # it is initialized by the installation framework (bsc#1135295)
-      return if Stage.initial || @pkg_initialized
-
-      # We don't strictly need any package callbacks here, but libzypp might
-      # report an error, and then there would be no user feedback.
-      PackageCallbacks.InitPackageCallbacks
-      # FIXME: Mode.test workaround for the old testsuite to not break the other modules
-      Pkg.TargetInitialize(Installation.destdir) unless Mode.test
-
-      # Add the installed system to the libzypp pool
-      # FIXME: Mode.test workaround for the old testsuite to not break the other modules
-      Pkg.TargetLoad unless Mode.test
-
-      @pkg_initialized = true
-    end
-
 
     publish :variable => :user, :type => "string"
     publish :variable => :pw_less, :type => "boolean"
