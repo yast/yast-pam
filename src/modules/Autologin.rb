@@ -208,17 +208,17 @@ module Yast
       @pkg_initialized = true
     end
 
-    publish :variable => :user, :type => "string"
-    publish :variable => :pw_less, :type => "boolean"
-    publish :variable => :used, :type => "boolean"
-    publish :variable => :modified, :type => "boolean"
-    publish :function => :Read, :type => "boolean ()"
-    publish :function => :Write, :type => "boolean (boolean)"
-    publish :function => :Disable, :type => "void ()"
-    publish :function => :Use, :type => "void (boolean)"
-    publish :function => :supported?, :type => "boolean ()"
-    publish :function => :DisableAndWrite, :type => "boolean (boolean)"
-    publish :function => :AskForDisabling, :type => "boolean (string)"
+    publish variable: :user, type: "string"
+    publish variable: :pw_less, type: "boolean"
+    publish variable: :used, type: "boolean"
+    publish variable: :modified, type: "boolean"
+    publish function: :Read, type: "boolean ()"
+    publish function: :Write, type: "boolean (boolean)"
+    publish function: :Disable, type: "void ()"
+    publish function: :Use, type: "void (boolean)"
+    publish function: :supported?, type: "boolean ()"
+    publish function: :DisableAndWrite, type: "boolean (boolean)"
+    publish function: :AskForDisabling, type: "boolean (string)"
   end
 
   Autologin = AutologinClass.new

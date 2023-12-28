@@ -43,7 +43,7 @@ module Yast
     def List
       begin
         lines = Yast::Execute.locally!(PAM_CONFIG_BIN, "--list-modules",
-          :stdout => :capture).split("\n")
+          stdout: :capture).split("\n")
       rescue Cheetah::ExecutionFailed => e
         log.error "pam-config --list-modules failed #{e.message}"
         return []
@@ -133,11 +133,11 @@ module Yast
       set ? Add(mod) : Remove(mod)
     end
 
-    publish :function => :Query, :type => "map (string)"
-    publish :function => :Enabled, :type => "boolean (string)"
-    publish :function => :Add, :type => "boolean (string)"
-    publish :function => :Remove, :type => "boolean (string)"
-    publish :function => :Set, :type => "boolean (string, boolean)"
+    publish function: :Query, type: "map (string)"
+    publish function: :Enabled, type: "boolean (string)"
+    publish function: :Add, type: "boolean (string)"
+    publish function: :Remove, type: "boolean (string)"
+    publish function: :Set, type: "boolean (string, boolean)"
   end
 
   Pam = PamClass.new

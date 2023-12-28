@@ -103,10 +103,10 @@ module Yast
       @cfa_model = nil
     end
 
-    publish :function => :ReadDb, :type => "list <string> (string)"
-    publish :function => :WriteDb, :type => "boolean (string, list <string>)"
-    publish :function => :WriteAutofs, :type => "boolean (boolean, string)"
-    publish :function => :Write, :type => "boolean ()"
+    publish function: :ReadDb, type: "list <string> (string)"
+    publish function: :WriteDb, type: "boolean (string, list <string>)"
+    publish function: :WriteAutofs, type: "boolean (boolean, string)"
+    publish function: :Write, type: "boolean ()"
 
   private
 
