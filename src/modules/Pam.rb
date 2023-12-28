@@ -82,6 +82,7 @@ module Yast
       ) do |line|
         l = Builtins.splitstring(line, ":")
         next if line == "" || Ops.less_than(Builtins.size(l), 2)
+
         key = Ops.get_string(l, 0, "")
         Ops.set(
           ret,
