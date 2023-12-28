@@ -32,8 +32,7 @@ module Yast
   class PamClass < Module
     include Yast::Logger
 
-    def main
-    end
+    def main; end
 
     PAM_CONFIG_BIN = "/usr/sbin/pam-config".freeze
 

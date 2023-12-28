@@ -9,18 +9,14 @@ Metrics/BlockLength:
   Exclude:
     - 'test/**/*'
 
-# Offense count: 3
-# Configuration parameters: ExpectMatchingDefinition, Regex, IgnoreExecutableScripts, AllowedAcronyms.
-# AllowedAcronyms: CLI, DSL, ACL, API, ASCII, CPU, CSS, DNS, EOF, GUID, HTML, HTTP, HTTPS, ID, IP, JSON, LHS, QPS, RAM, RHS, RPC, SLA, SMTP, SQL, SSH, TCP, TLS, TTL, UDP, UI, UID, UUID, URI, URL, UTF8, VM, XML, XMPP, XSRF, XSS
+# Backward compatibility
 Naming/FileName:
   Exclude:
     - 'src/modules/Autologin.rb'
     - 'src/modules/Nsswitch.rb'
     - 'src/modules/Pam.rb'
 
-# Offense count: 16
-# Configuration parameters: .
-# SupportedStyles: snake_case, camelCase
+# Backward compatibility
 Naming/MethodName:
   Exclude:
     - 'src/modules/Nsswitch.rb'
@@ -34,13 +30,6 @@ Style/Documentation:
     - 'test/**/*'
     - 'src/modules/Autologin.rb'
     - 'src/modules/Nsswitch.rb'
-    - 'src/modules/Pam.rb'
-
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: compact, expanded
-Style/EmptyMethod:
-  Exclude:
     - 'src/modules/Pam.rb'
 
 # Offense count: 3
