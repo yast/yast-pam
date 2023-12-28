@@ -151,10 +151,10 @@ module CFA
       @parser.file_name = write_path if @parser.respond_to?(:file_name=)
       content = @parser.serialize(data)
 
-      if content != @current_content
-        @file_handler.write(write_path, content)
-        @current_content = content
-      end
+      return if content == @current_content
+
+      @file_handler.write(write_path, content)
+      @current_content = content
     end
 
   private

@@ -32,26 +32,9 @@ Style/Documentation:
     - 'src/modules/Nsswitch.rb'
     - 'src/modules/Pam.rb'
 
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, never
+# Disable as it is too bug prone to enable it
 Style/FrozenStringLiteralComment:
-  Exclude:
-    - 'Rakefile'
-    - 'src/lib/cfa/nsswitch.rb'
-    - 'src/modules/Autologin.rb'
-    - 'src/modules/Nsswitch.rb'
-    - 'src/modules/Pam.rb'
-    - 'test/cfa/nsswitch_test.rb'
-    - 'test/nsswitch_test.rb'
-    - 'test/test_helper.rb'
-
-# Offense count: 1
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Exclude:
-    - 'src/lib/cfa/nsswitch.rb'
+  Enabled: false
 
 # Offense count: 43
 # Cop supports --auto-correct.
