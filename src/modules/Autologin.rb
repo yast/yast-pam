@@ -160,9 +160,9 @@ module Yast
       # like "Now LDAP was enabled")
       question = Builtins.sformat(
         _(
-          "The automatic login feature is enabled for user %1.\n" +
-            "%2\n" +
-            "Disable automatic login?"
+          "The automatic login feature is enabled for user %1.\n" \
+          "%2\n" \
+          "Disable automatic login?"
         ),
         @user,
         new
