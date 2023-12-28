@@ -1,6 +1,6 @@
 # use the shared YaST defaults
 inherit_from:
-  /usr/share/YaST2/data/devtools/data/rubocop-0.71.0_yast_style.yml
+  /usr/share/YaST2/data/devtools/data/rubocop-1.24.1_yast_style.yml
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -26,7 +26,7 @@ Layout/EmptyLines:
 # Offense count: 15
 # Cop supports --auto-correct.
 # Configuration parameters: IndentationWidth.
-Layout/Tab:
+Layout/IndentationStyle:
   Exclude:
     - 'src/modules/Autologin.rb'
     - 'src/modules/Nsswitch.rb'
