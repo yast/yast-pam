@@ -91,7 +91,7 @@ module Yast
         )
       ) == "yes"
 
-      @user = "" if @user == nil || @user == ""
+      @user ||= ""
 
       @used = @user != ""
       @used
