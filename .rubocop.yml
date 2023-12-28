@@ -32,14 +32,6 @@ Style/Documentation:
     - 'src/modules/Nsswitch.rb'
     - 'src/modules/Pam.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/Encoding:
-  Exclude:
-    - 'src/modules/Autologin.rb'
-    - 'src/modules/Nsswitch.rb'
-    - 'src/modules/Pam.rb'
-
 # Offense count: 8
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
