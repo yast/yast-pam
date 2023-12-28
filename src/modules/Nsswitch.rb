@@ -45,7 +45,6 @@ module Yast
       cfa_model.services_for(db_name)
     end
 
-
     # Writes a database entry as a list to nsswitch_conf or deletes an existing
     # database entry
     #

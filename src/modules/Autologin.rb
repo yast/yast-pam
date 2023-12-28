@@ -99,7 +99,6 @@ module Yast
       @used
     end
 
-
     # Write autologin settings
     # @param [Boolean] write_only when true, suseconfig script will not be run
     # @return written anything?
