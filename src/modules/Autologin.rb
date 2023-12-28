@@ -100,9 +100,9 @@ module Yast
     end
 
     # Write autologin settings
-    # @param [Boolean] write_only when true, suseconfig script will not be run
+    # @param [Boolean] _write_only deprecated. suseconfig is dead
     # @return written anything?
-    def Write(write_only)
+    def Write(_write_only)
       return false if !available || !@modified
 
       Builtins.y2milestone(
