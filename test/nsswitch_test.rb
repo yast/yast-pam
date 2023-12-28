@@ -31,13 +31,13 @@ describe Yast::Nsswitch do
   let(:file_path) { "#{tmpdir}/etc/nsswitch.conf" }
 
   around do |example|
-    begin
-      FileUtils.cp_r(original_data_example, tmpdir)
-      change_scr_root(tmpdir, &example)
-      nsswitch.reset
-    ensure
-      FileUtils.remove_entry(tmpdir)
-    end
+
+    FileUtils.cp_r(original_data_example, tmpdir)
+    change_scr_root(tmpdir, &example)
+    nsswitch.reset
+  ensure
+    FileUtils.remove_entry(tmpdir)
+
   end
 
   describe "#ReadDb" do

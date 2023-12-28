@@ -35,9 +35,3 @@ Style/Documentation:
 # Disable as it is too bug prone to enable it
 Style/FrozenStringLiteralComment:
   Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/RedundantBegin:
-  Exclude:
-    - 'test/nsswitch_test.rb'
