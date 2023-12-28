@@ -54,14 +54,14 @@ module Yast
 
       rx = /[ \t]*pam_([a-z0-9_]+)\.so[ \t]*/
 
-      mods = lines.reduce([]) do |mods, line|
+      res = lines.reduce([]) do |mods, line|
         m = line.match(rx)
         m ? mods.push(m[1]) : mods
       end
 
-      log.info("pam modules #{mods}")
+      log.info("pam modules #{res}")
 
-      mods
+      res
     end
 
     # Query PAM configuration for status of given module
