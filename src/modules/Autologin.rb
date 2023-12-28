@@ -210,7 +210,6 @@ module Yast
       @pkg_initialized = true
     end
 
-
     publish :variable => :user, :type => "string"
     publish :variable => :pw_less, :type => "boolean"
     publish :variable => :used, :type => "boolean"
