@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 # ------------------------------------------------------------------------------
 # Copyright (c) 2006-2012 Novell, Inc. All Rights Reserved.
 #
@@ -32,8 +30,7 @@ module Yast
   class PamClass < Module
     include Yast::Logger
 
-    def main
-    end
+    def main; end
 
     PAM_CONFIG_BIN = "/usr/sbin/pam-config".freeze
 
@@ -46,7 +43,7 @@ module Yast
     def List
       begin
         lines = Yast::Execute.locally!(PAM_CONFIG_BIN, "--list-modules",
-          :stdout => :capture).split("\n")
+          stdout: :capture).split("\n")
       rescue Cheetah::ExecutionFailed => e
         log.error "pam-config --list-modules failed #{e.message}"
         return []
@@ -54,14 +51,14 @@ module Yast
 
       rx = /[ \t]*pam_([a-z0-9_]+)\.so[ \t]*/
 
-      mods = lines.reduce([]) do |mods, line|
+      res = lines.reduce([]) do |mods, line|
         m = line.match(rx)
         m ? mods.push(m[1]) : mods
       end
 
-      log.info("pam modules #{mods}")
+      log.info("pam modules #{res}")
 
-      mods
+      res
     end
 
     # Query PAM configuration for status of given module
@@ -82,6 +79,7 @@ module Yast
       ) do |line|
         l = Builtins.splitstring(line, ":")
         next if line == "" || Ops.less_than(Builtins.size(l), 2)
+
         key = Ops.get_string(l, 0, "")
         Ops.set(
           ret,
@@ -135,11 +133,11 @@ module Yast
       set ? Add(mod) : Remove(mod)
     end
 
-    publish :function => :Query, :type => "map (string)"
-    publish :function => :Enabled, :type => "boolean (string)"
-    publish :function => :Add, :type => "boolean (string)"
-    publish :function => :Remove, :type => "boolean (string)"
-    publish :function => :Set, :type => "boolean (string, boolean)"
+    publish function: :Query, type: "map (string)"
+    publish function: :Enabled, type: "boolean (string)"
+    publish function: :Add, type: "boolean (string)"
+    publish function: :Remove, type: "boolean (string)"
+    publish function: :Set, type: "boolean (string, boolean)"
   end
 
   Pam = PamClass.new

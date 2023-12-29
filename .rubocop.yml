@@ -1,48 +1,6 @@
 # use the shared YaST defaults
 inherit_from:
-  /usr/share/YaST2/data/devtools/data/rubocop-0.71.0_yast_style.yml
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Layout/EmptyLineAfterGuardClause:
-  Exclude:
-    - 'src/modules/Pam.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAdjacentOneLineDefs, NumberOfEmptyLines.
-Layout/EmptyLineBetweenDefs:
-  Exclude:
-    - 'src/modules/Autologin.rb'
-    - 'src/modules/Nsswitch.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-Layout/EmptyLines:
-  Exclude:
-    - 'src/modules/Autologin.rb'
-    - 'src/modules/Nsswitch.rb'
-
-# Offense count: 15
-# Cop supports --auto-correct.
-# Configuration parameters: IndentationWidth.
-Layout/Tab:
-  Exclude:
-    - 'src/modules/Autologin.rb'
-    - 'src/modules/Nsswitch.rb'
-    - 'src/modules/Pam.rb'
-
-# Offense count: 1
-Lint/ShadowingOuterLocalVariable:
-  Exclude:
-    - 'src/modules/Pam.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'src/modules/Autologin.rb'
+  /usr/share/YaST2/data/devtools/data/rubocop-1.24.1_yast_style.yml
 
 # Offense count: 5
 # Configuration parameters: CountComments, ExcludedMethods.
@@ -51,18 +9,14 @@ Metrics/BlockLength:
   Exclude:
     - 'test/**/*'
 
-# Offense count: 3
-# Configuration parameters: ExpectMatchingDefinition, Regex, IgnoreExecutableScripts, AllowedAcronyms.
-# AllowedAcronyms: CLI, DSL, ACL, API, ASCII, CPU, CSS, DNS, EOF, GUID, HTML, HTTP, HTTPS, ID, IP, JSON, LHS, QPS, RAM, RHS, RPC, SLA, SMTP, SQL, SSH, TCP, TLS, TTL, UDP, UI, UID, UUID, URI, URL, UTF8, VM, XML, XMPP, XSRF, XSS
+# Backward compatibility
 Naming/FileName:
   Exclude:
     - 'src/modules/Autologin.rb'
     - 'src/modules/Nsswitch.rb'
     - 'src/modules/Pam.rb'
 
-# Offense count: 16
-# Configuration parameters: .
-# SupportedStyles: snake_case, camelCase
+# Backward compatibility
 Naming/MethodName:
   Exclude:
     - 'src/modules/Nsswitch.rb'
@@ -78,68 +32,6 @@ Style/Documentation:
     - 'src/modules/Nsswitch.rb'
     - 'src/modules/Pam.rb'
 
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: compact, expanded
-Style/EmptyMethod:
-  Exclude:
-    - 'src/modules/Pam.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/Encoding:
-  Exclude:
-    - 'src/modules/Autologin.rb'
-    - 'src/modules/Nsswitch.rb'
-    - 'src/modules/Pam.rb'
-
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, never
+# Disable as it is too bug prone to enable it
 Style/FrozenStringLiteralComment:
-  Exclude:
-    - 'Rakefile'
-    - 'src/lib/cfa/nsswitch.rb'
-    - 'src/modules/Autologin.rb'
-    - 'src/modules/Nsswitch.rb'
-    - 'src/modules/Pam.rb'
-    - 'test/cfa/nsswitch_test.rb'
-    - 'test/nsswitch_test.rb'
-    - 'test/test_helper.rb'
-
-# Offense count: 1
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Exclude:
-    - 'src/lib/cfa/nsswitch.rb'
-
-# Offense count: 43
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, UseHashRocketsWithSymbolValues, PreferHashRocketsForNonAlnumEndingSymbols.
-# SupportedStyles: ruby19, hash_rockets, no_mixed_keys, ruby19_no_mixed_keys
-Style/HashSyntax:
-  Exclude:
-    - 'src/modules/Autologin.rb'
-    - 'src/modules/Nsswitch.rb'
-    - 'src/modules/Pam.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/LineEndConcatenation:
-  Exclude:
-    - 'src/modules/Autologin.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: predicate, comparison
-Style/NilComparison:
-  Exclude:
-    - 'src/modules/Autologin.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/RedundantBegin:
-  Exclude:
-    - 'test/nsswitch_test.rb'
+  Enabled: false

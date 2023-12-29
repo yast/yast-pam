@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 # ------------------------------------------------------------------------------
 # Copyright (c) 2006-2012 Novell, Inc. All Rights Reserved.
 #
@@ -93,17 +91,16 @@ module Yast
         )
       ) == "yes"
 
-      @user = "" if @user == nil || @user == ""
+      @user ||= ""
 
       @used = @user != ""
       @used
     end
 
-
     # Write autologin settings
-    # @param [Boolean] write_only when true, suseconfig script will not be run
+    # @param [Boolean] _write_only deprecated. suseconfig is dead
     # @return written anything?
-    def Write(write_only)
+    def Write(_write_only)
       return false if !available || !@modified
 
       Builtins.y2milestone(
@@ -163,9 +160,9 @@ module Yast
       # like "Now LDAP was enabled")
       question = Builtins.sformat(
         _(
-          "The automatic login feature is enabled for user %1.\n" +
-            "%2\n" +
-            "Disable automatic login?"
+          "The automatic login feature is enabled for user %1.\n" \
+          "%2\n" \
+          "Disable automatic login?"
         ),
         @user,
         new
@@ -211,18 +208,17 @@ module Yast
       @pkg_initialized = true
     end
 
-
-    publish :variable => :user, :type => "string"
-    publish :variable => :pw_less, :type => "boolean"
-    publish :variable => :used, :type => "boolean"
-    publish :variable => :modified, :type => "boolean"
-    publish :function => :Read, :type => "boolean ()"
-    publish :function => :Write, :type => "boolean (boolean)"
-    publish :function => :Disable, :type => "void ()"
-    publish :function => :Use, :type => "void (boolean)"
-    publish :function => :supported?, :type => "boolean ()"
-    publish :function => :DisableAndWrite, :type => "boolean (boolean)"
-    publish :function => :AskForDisabling, :type => "boolean (string)"
+    publish variable: :user, type: "string"
+    publish variable: :pw_less, type: "boolean"
+    publish variable: :used, type: "boolean"
+    publish variable: :modified, type: "boolean"
+    publish function: :Read, type: "boolean ()"
+    publish function: :Write, type: "boolean (boolean)"
+    publish function: :Disable, type: "void ()"
+    publish function: :Use, type: "void (boolean)"
+    publish function: :supported?, type: "boolean ()"
+    publish function: :DisableAndWrite, type: "boolean (boolean)"
+    publish function: :AskForDisabling, type: "boolean (string)"
   end
 
   Autologin = AutologinClass.new

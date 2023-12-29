@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 # ------------------------------------------------------------------------------
 # Copyright (c) 2006-2012 Novell, Inc. All Rights Reserved.
 #
@@ -44,7 +42,6 @@ module Yast
     def ReadDb(db_name)
       cfa_model.services_for(db_name)
     end
-
 
     # Writes a database entry as a list to nsswitch_conf or deletes an existing
     # database entry
@@ -106,10 +103,10 @@ module Yast
       @cfa_model = nil
     end
 
-    publish :function => :ReadDb, :type => "list <string> (string)"
-    publish :function => :WriteDb, :type => "boolean (string, list <string>)"
-    publish :function => :WriteAutofs, :type => "boolean (boolean, string)"
-    publish :function => :Write, :type => "boolean ()"
+    publish function: :ReadDb, type: "list <string> (string)"
+    publish function: :WriteDb, type: "boolean (string, list <string>)"
+    publish function: :WriteAutofs, type: "boolean (boolean, string)"
+    publish function: :Write, type: "boolean ()"
 
   private
 
