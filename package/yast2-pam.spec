@@ -1,7 +1,7 @@
 #
 # spec file for package yast2-pam
 #
-# Copyright (c) 2013 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2023 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -12,39 +12,40 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-Name:          yast2-pam
+
+Name:           yast2-pam
 Version:        4.6.0
-Release:       0
-Summary:       YaST2 - PAM Agent
+Release:        0
+Summary:        YaST2 - PAM Agent
 
-Group:         System/YaST
-License:       GPL-2.0-only
-URL:           http://github.com/yast/yast-pam
-Source0:       %{name}-%{version}.tar.bz2
-BuildRoot:     %{_tmppath}/%{name}-%{version}-build
+Group:          System/YaST
+License:        GPL-2.0-only
+URL:            http://github.com/yast/yast-pam
+Source0:        %{name}-%{version}.tar.bz2
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
-BuildRequires: yast2
-BuildRequires: yast2-devtools >= 3.1.10
-BuildRequires: rubygem(%{rb_default_ruby_abi}:yast-rake)
+BuildRequires:  yast2
+BuildRequires:  yast2-devtools >= 3.1.10
+BuildRequires:  rubygem(%{rb_default_ruby_abi}:yast-rake)
 # cfa for parsing nsswitch
-BuildRequires: rubygem(%rb_default_ruby_abi:cfa) >= 0.6.4
+BuildRequires:  rubygem(%rb_default_ruby_abi:cfa) >= 0.6.4
 # lenses are needed to use cfa
-BuildRequires: augeas-lenses
+BuildRequires:  augeas-lenses
 # testsuite
-BuildRequires: rubygem(%rb_default_ruby_abi:rspec)
+BuildRequires:  rubygem(%rb_default_ruby_abi:rspec)
 
-Requires:	     yast2
+Requires:       yast2
 # cfa for parsing nsswitch
-Requires:      rubygem(%rb_default_ruby_abi:cfa) >= 0.6.4
+Requires:       rubygem(%rb_default_ruby_abi:cfa) >= 0.6.4
 # lenses are needed to use cfa
-Requires:      augeas-lenses
-Requires:	     pam-config >= 0.8
-Requires:      yast2-ruby-bindings >= 1.0.0
+Requires:       augeas-lenses
+Requires:       pam-config >= 0.8
+Requires:       yast2-ruby-bindings >= 1.0.0
 
-BuildArch:     noarch
+BuildArch:      noarch
 
 %description
 This agent is used by YaST2 to modify the PAM configuration files
@@ -71,3 +72,5 @@ rake install DESTDIR="%{buildroot}"
 %{yast_agentdir}/ag_passwd
 %doc %{yast_docdir}
 %license COPYING
+
+%changelog
